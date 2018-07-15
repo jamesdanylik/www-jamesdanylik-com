@@ -2,18 +2,14 @@ const config = require("./data/SiteConfig");
 const urljoin = require("url-join");
 
 module.exports = {
-  pathPrefix: config.pathPrefix,
   siteMetadata: {
-    siteUrl: urljoin(config.siteUrl, config.pathPrefix),
+    siteUrl: config.siteUrl,
     rssMetadata: {
-      site_url: urljoin(config.siteUrl, config.pathPrefix),
-      feed_url: urljoin(config.siteUrl, config.pathPrefix, config.siteRss),
+      site_url: config.siteUrl,
+      feed_url: urljoin(config.siteUrl, config.siteRss),
       title: config.siteTitle,
       description: config.siteDescription,
-      image_url: `${urljoin(
-        config.siteUrl,
-        config.pathPrefix
-      )}/logos/logo-512.png`,
+      image_url: `${config.siteUrl}/logos/logo-512.png`,
       author: config.userName,
       copyright: config.copyright
     }
@@ -167,6 +163,14 @@ module.exports = {
           }
         ]
       }
-    }
+    },
+    /*{ // Start of plugins for james.danylik.com
+			resolve: "gatsby-source-lastfm",
+	    options: {
+				api_key: "1b191ee35cf57e58eb86d2fcc3ecef11",
+				username: "jamesdanylik",
+				limit: 400
+			}
+    }*/
   ]
 };
