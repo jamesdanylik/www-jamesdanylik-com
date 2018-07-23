@@ -1,4 +1,4 @@
-#www-jamesdanylik-com
+# www-jamesdanylik-com
 
 This is the source code for my personal website, available at james.danylik.com.
 It primarily serves as a home for my technical notes and non-technical rambling, but also serves
