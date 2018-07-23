@@ -34,7 +34,11 @@
     "react-helmet": "^5.2.0",
     "react-share": "^2.0.0",
     "react-twitter-widgets": "^1.7.1",
-    "url-join": "^4.0.0"
+    "url-join": "^4.0.0",
+    "gatsby-source-lastfm": "^0.1.0",
+    "@jamesdanylik/gatsby-source-goodreads": "^0.1.0",
+    "gatsby-source-anilist": "^0.1.0",
+    "gatsby-source-steam": "^0.1.0"
   },
   "devDependencies": {
     "cli-glob": "^0.1.0",

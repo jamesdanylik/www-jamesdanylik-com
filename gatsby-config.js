@@ -164,13 +164,58 @@ module.exports = {
         ]
       }
     },
-    /*{ // Start of plugins for james.danylik.com
-			resolve: "gatsby-source-lastfm",
-	    options: {
-				api_key: "1b191ee35cf57e58eb86d2fcc3ecef11",
-				username: "jamesdanylik",
-				limit: 400
-			}
-    }*/
+    { // Start of plugins for james.danylik.com
+      resolve: "gatsby-source-lastfm",
+      options: {
+	api_key: process.env.LASTFM_APIKEY,
+	username: process.env.LASTFM_USERNAME,
+	limit: 1200
+      }
+    },
+    {
+      resolve: "gatsby-source-steam",
+      options: {
+        api_key: process.env.STEAM_APIKEY,
+        user_id: process.env.STEAM_USERID
+      }
+    },
+    {
+      resolve: "@jamesdanylik/gatsby-source-goodreads",
+      options: {
+	key: process.env.GOODREADS_APIKEY,
+	id: process.env.GOODREADS_USERID 
+      }
+    },
+    {
+      resolve: 'gatsby-source-anilist',
+      options: { 
+        queries: [
+          `
+            {
+              MediaListCollection(userId: 122315, type:ANIME) {
+                lists {
+                  name
+                  entries {
+                    id
+                    media {
+                      id
+                      title {
+                        romaji
+                        english
+                        native
+                        userPreferred
+                      }
+                    }
+                  }
+                  isCustomList
+                  isSplitCompletedList
+                  status
+                }
+              }
+            }
+          `
+        ]
+      }
+    },
   ]
 };
