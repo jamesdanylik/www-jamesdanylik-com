@@ -13,9 +13,3 @@ It also utilize several source plugins which I've implmented myself and made ava
 
 Travis-CI makes builds daily and on-commit, before depoying the resulting site to [james.danylik.com](https://james.danylik.com).  (Or will; this is still being worked on at this phase!)
 
-'Master' contains the upstream branch of gatsby-advanced-starter; my public site is on the 'public' branch, to better
-facilitate merging changes from upstream.
-Finally, there is a 'private' branch which hosts the forward development version of the site, but this is only available
-on my private git server (otherwise, it wouldn't really be 'private', would it?). 
-
-
