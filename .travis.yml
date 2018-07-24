@@ -11,5 +11,5 @@ after_success:
   - "echo $DEPLOY_KEY > ~/.ssh/id_rsa"
   - "echo 'Key installed?  Trying deployment...'"
   - "echo 'test succesful' > test_file"
-  - "scp test_file jpdanylik@james.danylik.com"
+  - "scp test_file jpdanylik@james.danylik.com:~/"
 
