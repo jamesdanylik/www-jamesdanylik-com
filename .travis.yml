@@ -6,6 +6,7 @@ branches:
     - master
 script:
   - "npm run-script build"
+  - "npm run-script test"
 after_success:
   - "echo -n $travisci_{00..10} >> ~/.ssh/id_rsa_base64"
   - "base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa"
