@@ -27,7 +27,7 @@
     "gatsby-remark-responsive-iframe": "next",
     "gatsby-source-anilist": "^0.1.0",
     "gatsby-source-filesystem": "next",
-    "gatsby-source-lastfm": "^0.1.0",
+    "gatsby-source-lastfm": "^0.1.1",
     "gatsby-source-steam": "^0.1.0",
     "gatsby-transformer-remark": "next",
     "gatsby-transformer-sharp": "next",
