@@ -11,8 +11,6 @@ after_success:
   - "echo -n $travisci_{00..10} >> ~/.ssh/id_rsa_base64"
   - "base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa"
   - "chmod 600 ~/.ssh/id_rsa"
-  - "echo 'Key installed?  Trying deployment...'"
-  - "echo 'test succesful' > test_file"
   - "scp -o StrictHostKeyChecking=no UserKnownHostsFile=/dev/null test_file jpdanylik@james.danylik.com:~/"
 env:
   global:

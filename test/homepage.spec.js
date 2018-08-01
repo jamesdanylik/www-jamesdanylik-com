@@ -19,7 +19,7 @@ describe("Homepage", () => {
       userAgent: ""
     })
 
-    await page.goto("http://localhost:9000")
+    await page.goto(siteRoot)
   })
 
   afterAll(async () => {
