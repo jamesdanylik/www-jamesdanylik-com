@@ -1,5 +1,6 @@
 # www-jamesdanylik-com
 
+[![Build Status](https://travis-ci.org/jamesdanylik/www-jamesdanylik-com.svg?branch=master)](https://travis-ci.org/jamesdanylik/www-jamesdanylik-com)
 [![Code Climate](https://codeclimate.com/github/jamesdanylik/www-jamesdanylik-com/badges/gpa.svg)](https://codeclimate.com/github/jamesdanylik/www-jamesdanylik-com)
 [![Issue Count](https://codeclimate.com/github/jamesdanylik/www-jamesdanylik-com/badges/issue_count.svg)](https://codeclimate.com/github/jamesdanylik/www-jamesdanylik-com)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/8c934b37e91740cd9d795941742a72cd)](https://www.codacy.com/project/jamesdanylik/www-jamesdanylik-com/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=jamesdanylik/www-jamesdanylik-com&amp;utm_campaign=Badge_Grade_Dashboard)
