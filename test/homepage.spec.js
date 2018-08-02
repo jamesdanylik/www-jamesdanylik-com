@@ -3,6 +3,8 @@ const { port } = require("../jest-puppeteer.config").server
 
 const siteRoot = `http://localhost:${port}`
 
+jest.setTimeout(30000)
+
 describe("Homepage", () => {
   let browser = ""
   let page = ""
