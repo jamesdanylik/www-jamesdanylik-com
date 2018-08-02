@@ -36,15 +36,15 @@ describe("LastFM Source Plugin", () => {
   })
 
   const getData = async () => {
-    const rawText = await page.$eval("#test-data", e => { return e.innerHTML })
+    const rawText = await page.$eval("#test-data", e => e.innerHTML)
     return JSON.parse(rawText)
   }
 
   const getPluginOptions = (plgs) => {
-    var d
+    let d
     plgs.forEach(plg => {
-      if( (typeof(plg) === "object") && (plg["resolve"] == "gatsby-source-lastfm")) {
-	d = plg["options"]
+      if( (typeof(plg) === "object") && (plg.resolve === "gatsby-source-lastfm")) {
+	d = plg.options
       }
     })
     return d

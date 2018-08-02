@@ -7,8 +7,8 @@ class testLastFM extends React.Component {
     const lastFMData = this.props.data.allLastfmPlayback.edges
     return (
       <div id="test-data">
-	<Helmet title="gatsby-source-lastfm test page" />
-	{JSON.stringify(lastFMData)}
+        <Helmet title="gatsby-source-lastfm test page" />
+        {JSON.stringify(lastFMData)}
       </div>
     ) 
   }

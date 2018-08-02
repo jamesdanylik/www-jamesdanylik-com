@@ -7,8 +7,8 @@ class testGoodreads extends React.Component {
     const goodreadsData = this.props.data.allGoodreadsShelf.edges
     return (
       <div id="test-data">
-	<Helmet title="gatsby-source-goodreads test page" />
-	{JSON.stringify(goodreadsData)}
+        <Helmet title="gatsby-source-goodreads test page" />
+        {JSON.stringify(goodreadsData)}
       </div>
     ) 
   }
@@ -16,29 +16,30 @@ class testGoodreads extends React.Component {
 
 export default testGoodreads
 
+/* eslint no-undef: "off" */
 export const pageQuery = graphql`
   query TestGoodreadsQuery {
-  allGoodreadsShelf {
-    edges {
-      node {
-        id
-        name
-        reviews {
+    allGoodreadsShelf {
+      edges {
+        node {
           id
-          book {
+          name
+          reviews {
             id
-            title
-            authors {
+            book {
               id
-              name
-              books {
+              title
+              authors {
                 id
+                name
+                books {
+                  id
+                }
               }
             }
           }
         }
       }
     }
-  }
   }
 `

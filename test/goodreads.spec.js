@@ -29,7 +29,7 @@ describe("Goodreads Source Plugin", () => {
   })
 
   const getData = async () => {
-    const rawText = await page.$eval("#test-data", e => { return e.innerHTML })
+    const rawText = await page.$eval("#test-data", e => e.innerHTML )
     return JSON.parse(rawText)
   }
 
