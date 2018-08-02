@@ -11,7 +11,7 @@ after_success:
   - "echo -n $travisci_{00..10} >> ~/.ssh/id_rsa_base64"
   - "base64 --decode --ignore-garbage ~/.ssh/id_rsa_base64 > ~/.ssh/id_rsa"
   - "chmod 600 ~/.ssh/id_rsa"
-  - "rsync e 'ssh -o StrictHostKeyChecking=no' -arvc --delete public/ jpdanylik@james.danylik.com:~/jamesdanylik.com/"
+  - 'rsync e "ssh -o StrictHostKeyChecking=no" -arvc --delete public/ jpdanylik@james.danylik.com:~/jamesdanylik.com/'
 env:
   global:
     - secure: "yV6cdWT8N0wVcYo/XSyjiV7fQRd58Uw+l9fBn37eF3LVUH8Yx5sJpXa7fU2tJLFitkaGgkYe93CZT1g/qFVGMvokcGgyA/IWN6zJSpsmKuTNStnrC0MVRC/j1yxg1fKNHCAZrp4pEMuZlPpHseL9eGxKE+0c0Up9xSzWr7ZrXGchZLwkb7FTU2cTSDUTkyWv0Of4rpNxejvP9iw1URdzp3yucf5KZ0c9FZQAoRwt1xxeoq/dmbjviDowzo2Dn16O6DV+CdfajwKDdJ1cNUj2pNy5UAApBgX1wBBvlYTgCk7XmN+coVBdb92QHB7jgmMw6PW6vbMQRggA9RIuEGNP5JRMGjvhwdRizCFIqjVtj4k0VwCKhWRMdfsUWG8PxgbiDbSlC+f6Qw5mwVazRYjPVobX5td7DU7ply/hTp9g7pDuUYlTMkAK7ZxCZflEMvdtGLzHUam3cBt6t4rWOcCX9Q3orHkzuGm2GKSE4QxrDZclOiFGq1TcrYYLTnVX/b/u7z80UijTJn7LjC5GOFAFwOh3Q3p6DRsDsqxtcHE79+RyVVZ5DL5ZGkClFs26k/P9GYih0e/hIr+E+Lq3ZZomO0dCaAHEQmHMHQc7eLC3D6pHOTVkzYQHacjL8ilXO305ZLLXOzNR89fF9Mvv+SZjULEOII1GY1q9fgZcq6d1gL4="
