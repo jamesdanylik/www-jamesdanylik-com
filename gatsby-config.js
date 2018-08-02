@@ -169,7 +169,7 @@ module.exports = {
       options: {
 	api_key: process.env.LASTFM_APIKEY,
 	username: process.env.LASTFM_USERNAME,
-	limit: 1200
+	limit: 400
       }
     },
     {

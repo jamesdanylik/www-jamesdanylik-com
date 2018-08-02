@@ -5539,9 +5539,9 @@ gatsby-source-filesystem@next:
     valid-url "^1.0.9"
     xstate "^3.1.0"
 
-gatsby-source-lastfm@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/gatsby-source-lastfm/-/gatsby-source-lastfm-0.1.0.tgz#ec90b2a05498de812e300ed60ebe8ef2fefe0fdc"
+gatsby-source-lastfm@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/gatsby-source-lastfm/-/gatsby-source-lastfm-0.1.1.tgz#64c30195a730ea7601fcac4bc3c3d92166220d31"
   dependencies:
     node-fetch "^2.1.2"
     query-string "^6.1.0"
