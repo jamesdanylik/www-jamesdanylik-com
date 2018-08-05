@@ -12,11 +12,11 @@ import config from "../../data/SiteConfig";
 class MahjongPage extends Component {
   constructor(props) {
     super(props)
-    this.state = { width: window.innerWidth, height: window.innerHeight, loaded: "Fetching Mahjong CSV..."}
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
   }
 
   componentDidMount() {
+    this.updateWindowDimensions()
     window.addEventListener("resize", this.updateWindowDimensions)
     this.fetchSheetScores()
   }
@@ -79,6 +79,7 @@ class MahjongPage extends Component {
   }
 
   render() {
+    if(this.state) {
     return (
       <Layout location={this.props.location}>
           <Helmet title={`Mahjong | ${config.siteTitle}`} />
@@ -94,6 +95,14 @@ class MahjongPage extends Component {
 	  </svg>
       </Layout>
     );
+    }
+    else {
+      return (
+	<Layout location={this.props.location}>
+	  <div>Loading</div>
+	</Layout>
+      )
+    }
   }
 }
 
