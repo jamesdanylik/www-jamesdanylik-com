@@ -55,9 +55,9 @@ class MahjongPage extends Component {
       // table structure:
       //  3manDate 3manPlay1 3ManPlay2 3ManPlay3 3ManScore1 3ManScore2 3ManScore3 
       //  4ManDate 4ManPlay1 4ManPlay2 4ManPlay3 4ManPlay4 4ManScore1 4ManScore2 4ManScore3 4ManScore4
-      //establish seasons?
-      //create player table
-      //for each row (game)
+      // establish seasons?
+      // create player table
+      // for each row (game)
       //  1. calculate global score
       //  2. calculate season score
       //  3. calculate dan point score
@@ -69,9 +69,7 @@ class MahjongPage extends Component {
     this.setState({loaded: "Loading Tenhou data..."})
 
     const rawTenhou = await fetch(TENHOU_JSON_URL)
-      .then(response => {
-	return response.json()
-      })
+      .then(response => response.json())
 
     console.log(rawTenhou)
 
@@ -96,13 +94,11 @@ class MahjongPage extends Component {
       </Layout>
     );
     }
-    else {
-      return (
-	<Layout location={this.props.location}>
-	  <div>Loading</div>
-	</Layout>
-      )
-    }
+    return (
+      <Layout location={this.props.location}>
+	<div>Loading</div>
+      </Layout>
+    )
   }
 }
 
