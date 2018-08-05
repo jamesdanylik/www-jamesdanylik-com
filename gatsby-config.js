@@ -191,28 +191,39 @@ module.exports = {
       options: { 
         queries: [
           `
-            {
-              MediaListCollection(userId: 122315, type:ANIME) {
-                lists {
-                  name
-                  entries {
-                    id
-                    media {
-                      id
-                      title {
-                        romaji
-                        english
-                        native
-                        userPreferred
-                      }
-                    }
-                  }
-                  isCustomList
-                  isSplitCompletedList
-                  status
-                }
-              }
-            }
+	    {
+	      MediaListCollection(userId: 122315, type:ANIME) {
+		lists {
+	          name
+	          entries {
+		    id
+	            media {
+	              id
+	              title {
+	                romaji
+	                english
+	                native
+	                userPreferred
+		      }
+		      season
+		      startDate {
+			year
+		        month
+		        day
+		      }
+		      endDate {
+			year
+			month
+			day
+		      }
+		    }
+		  }
+	          isCustomList
+	          isSplitCompletedList
+	          status
+	        }
+	      }
+	    }
           `
         ]
       }
