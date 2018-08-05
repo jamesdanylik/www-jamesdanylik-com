@@ -6,6 +6,8 @@ import PostListing from "../components/PostListing/PostListing";
 import SEO from "../components/SEO/SEO";
 import config from "../../data/SiteConfig";
 
+import Steam from "../components/Steam/Steam"
+
 class Index extends React.Component {
   render() {
     const postEdges = this.props.data.allMarkdownRemark.edges;
@@ -14,7 +16,9 @@ class Index extends React.Component {
         <div className="index-container">
           <Helmet title={config.siteTitle} />
           <SEO />
+	  <div>Last build at {this.props.data.site.buildTime}</div>
           <PostListing postEdges={postEdges} />
+	  <Steam gamesEdges={this.props.data.allSteamGame.edges} />
         </div>
       </Layout>
     );
@@ -46,6 +50,22 @@ export const pageQuery = graphql`
           }
         }
       }
+    }
+    allSteamGame {
+      edges {
+	node {
+	  id
+	  name
+	  playtime_2weeks
+	  playtime_forever
+	  img_icon_url
+	  img_logo_url
+	  appid
+	}
+      }
+    }
+    site {
+      buildTime
     }
   }
 `;
