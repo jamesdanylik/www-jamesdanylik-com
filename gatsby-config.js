@@ -187,6 +187,20 @@ module.exports = {
       }
     },
     {
+      resolve: "gatsby-source-git-commit"
+    },
+    {
+      resolve: "gatsby-source-npms",
+      options: {
+	packages: [
+	  "gatsby-source-lastfm",
+	  "@jamesdanylik/gatsby-source-goodreads",
+	  "gatsby-source-steam",
+	  "gatsby-source-anilist"
+	]
+      }
+    },
+    {
       resolve: 'gatsby-source-anilist',
       options: { 
         queries: [

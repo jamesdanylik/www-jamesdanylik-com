@@ -2694,6 +2694,10 @@ cheerio@^1.0.0-rc.2:
     lodash "^4.15.0"
     parse5 "^3.0.1"
 
+child_process@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/child_process/-/child_process-1.0.2.tgz#b1f7e7fc73d25e7fd1d455adc94e143830182b5a"
+
 chokidar@^1.5.1, chokidar@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
@@ -5539,12 +5543,24 @@ gatsby-source-filesystem@next:
     valid-url "^1.0.9"
     xstate "^3.1.0"
 
+gatsby-source-git-commit@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/gatsby-source-git-commit/-/gatsby-source-git-commit-0.0.2.tgz#385e35b439819966d31aa5d6ea7593b7abc04528"
+  dependencies:
+    child_process "^1.0.2"
+
 gatsby-source-lastfm@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/gatsby-source-lastfm/-/gatsby-source-lastfm-0.1.1.tgz#64c30195a730ea7601fcac4bc3c3d92166220d31"
   dependencies:
     node-fetch "^2.1.2"
     query-string "^6.1.0"
+
+gatsby-source-npms@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/gatsby-source-npms/-/gatsby-source-npms-0.0.1.tgz#78ab8e0d4c4f4f8b35d02d2480e63450e67d8452"
+  dependencies:
+    node-fetch "^2.2.0"
 
 gatsby-source-steam@^0.1.0:
   version "0.1.0"
@@ -8919,6 +8935,10 @@ node-fetch@^1.0.1:
 node-fetch@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.1.2.tgz#ab884e8e7e57e38a944753cec706f788d1768bb5"
+
+node-fetch@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.2.0.tgz#4ee79bde909262f9775f731e3656d0db55ced5b5"
 
 node-forge@0.7.5:
   version "0.7.5"
