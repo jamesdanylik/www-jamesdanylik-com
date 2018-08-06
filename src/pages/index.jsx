@@ -16,7 +16,19 @@ class Index extends React.Component {
         <div className="index-container">
           <Helmet title={config.siteTitle} />
           <SEO />
-	  <div>Last build at {this.props.data.site.buildTime}</div>
+	  <h1>Warning!</h1>
+	  <h2>Under HEAVY Construction</h2>
+	  <div>Currently in the process of porting the site to GatsbyJS v2; source plugins and testing for my users take prioirty over aesthics on the site, so most of my focus is there right now.  You can follow development of the site in the <a href="https://github.com/jamesdanylik/www-jamesdanylik-com">github repository here</a>, following the build logs at <a href="https://travis-ci.org/jamesdanylik/www-jamesdanylik-com">TravisCI here</a>, or check out one of my GatsbyJS source plugins that powers this site:
+	    <ul>
+	      <li><a href="https://github.com/jamesdanylik/gatsby-source-lastfm">gatsby-source-lastfm</a></li>
+	      <li><a href="https://github.com/jamesdanylik/gatsby-source-goodreads">@jamesdanylik/gatsby-source-goodreads</a></li>
+	      <li><a href="https://github.com/jamesdanylik/gatsby-source-anilist">gatsby-source-anilist</a></li>
+	      <li><a href="https://github.com/jamesdanylik/gatsby-source-steam">gatsby-source-steam</a></li>
+	      <li><a href="https://github.com/jamesdanylik/gatsby-source-npms">gatsby-source-npms</a></li>
+	      <li><a href="https://github.com/jamesdanylik/gatsby-source-git-commit">gatsby-source-git-commit</a></li>
+	    </ul>
+	  </div>
+	  <div>Last build commit #{this.props.data.allGitCommit.edges[0].node.commitHash} at {this.props.data.site.buildTime}</div>
           <PostListing postEdges={postEdges} />
 	  <Steam gamesEdges={this.props.data.allSteamGame.edges} />
         </div>
@@ -66,6 +78,14 @@ export const pageQuery = graphql`
     }
     site {
       buildTime
+    }
+    allGitCommit {
+      edges {
+	node {
+	  id
+	  commitHash
+	}
+      }
     }
   }
 `;
