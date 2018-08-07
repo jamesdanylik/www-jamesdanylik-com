@@ -196,7 +196,10 @@ module.exports = {
 	  "gatsby-source-lastfm",
 	  "@jamesdanylik/gatsby-source-goodreads",
 	  "gatsby-source-steam",
-	  "gatsby-source-anilist"
+	  "gatsby-source-anilist",
+	  "gatsby-source-npms",
+	  "gatsby-source-git-commit",
+	  "gatsby-source-myanimelist"
 	]
       }
     },

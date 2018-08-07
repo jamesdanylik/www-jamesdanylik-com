@@ -7,10 +7,15 @@ import SEO from "../components/SEO/SEO";
 import config from "../../data/SiteConfig";
 
 import Steam from "../components/Steam/Steam"
+import ProjectTracker from "../components/ProjectTracker/ProjectTracker"
 
 class Index extends React.Component {
   render() {
     const postEdges = this.props.data.allMarkdownRemark.edges;
+    const steamEdges = this.props.data.allSteamGame.edges
+    const npmsEdges = this.props.data.allNpmsPackage.edges
+    const buildCommit = this.props.data.allGitCommit.edges[0].node.commitHash
+    const buildTime = new Date(Date.parse(this.props.data.site.buildTime))
     return (
       <Layout location={this.props.location}>
         <div className="index-container">
@@ -18,19 +23,12 @@ class Index extends React.Component {
           <SEO />
 	  <h1>Warning!</h1>
 	  <h2>Under HEAVY Construction</h2>
-	  <div>Currently in the process of porting the site to GatsbyJS v2; source plugins and testing for my users take prioirty over aesthics on the site, so most of my focus is there right now.  You can follow development of the site in the <a href="https://github.com/jamesdanylik/www-jamesdanylik-com">github repository here</a>, following the build logs at <a href="https://travis-ci.org/jamesdanylik/www-jamesdanylik-com">TravisCI here</a>, or check out one of my GatsbyJS source plugins that powers this site:
-	    <ul>
-	      <li><a href="https://github.com/jamesdanylik/gatsby-source-lastfm">gatsby-source-lastfm</a></li>
-	      <li><a href="https://github.com/jamesdanylik/gatsby-source-goodreads">@jamesdanylik/gatsby-source-goodreads</a></li>
-	      <li><a href="https://github.com/jamesdanylik/gatsby-source-anilist">gatsby-source-anilist</a></li>
-	      <li><a href="https://github.com/jamesdanylik/gatsby-source-steam">gatsby-source-steam</a></li>
-	      <li><a href="https://github.com/jamesdanylik/gatsby-source-npms">gatsby-source-npms</a></li>
-	      <li><a href="https://github.com/jamesdanylik/gatsby-source-git-commit">gatsby-source-git-commit</a></li>
-	    </ul>
+	  <div>Currently in the process of porting the site to GatsbyJS v2; getting source plugins moved over and tested takes prioirty over aesthetics on the site, so most of my focus is there right now.  You can follow development of the site in the <a href="https://github.com/jamesdanylik/www-jamesdanylik-com">github repository here</a>, following the build logs at <a href="https://travis-ci.org/jamesdanylik/www-jamesdanylik-com">TravisCI here</a>, or check out one of my GatsbyJS source plugins that powers this site:
+	  <ProjectTracker npmsEdges={npmsEdges} />
 	  </div>
-	  <div>Last build commit #{this.props.data.allGitCommit.edges[0].node.commitHash} at {this.props.data.site.buildTime}</div>
+	  <div>Now viewing commit <a href={`https://github.com/jamesdanylik/www-jamesdanylik-com/commit/${buildCommit}`}>{buildCommit.slice(0,7)}</a>, from {buildTime.toLocaleString()}.</div>
           <PostListing postEdges={postEdges} />
-	  <Steam gamesEdges={this.props.data.allSteamGame.edges} />
+	  <Steam gamesEdges={steamEdges} />
         </div>
       </Layout>
     );
@@ -84,6 +82,44 @@ export const pageQuery = graphql`
 	node {
 	  id
 	  commitHash
+	}
+      }
+    }
+    allNpmsPackage {
+      edges {
+	node {
+	  id
+	  name
+	  collected {
+	    npm {
+	      dependentsCount
+	      starsCount
+	      downloads {
+		from
+		to
+		count
+	      }
+	      starsCount
+	    }
+	    github {
+	      starsCount
+	      forksCount
+	      subscribersCount
+	      starsCount
+	    }
+	    metadata {
+	      name
+	      version
+	      description
+	      date
+	      links {
+		npm
+		homepage
+		repository
+		bugs
+	      }
+	    }
+	  }
 	}
       }
     }
