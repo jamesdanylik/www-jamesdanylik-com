@@ -19,9 +19,11 @@ class Index extends React.Component {
     const npmsEdges = this.props.data.allNpmsPackage.edges
     const buildCommit = this.props.data.allGitCommit.edges[0].node.commitHash
     const travisBuild = this.props.data.allGitCommit.edges[0].node.travisNum
+    const travisId = this.props.data.allGitCommit.edges[0].node.travisId
     const reviewEdges = this.props.data.allGoodreadsShelf.edges
     const lastEdges = this.props.data.allLastfmTrack.edges
     const buildTime = new Date(Date.parse(this.props.data.site.buildTime))
+
     return (
       <Layout location={this.props.location}>
         <div className="index-container">
@@ -32,7 +34,13 @@ class Index extends React.Component {
 	  <div>Currently in the process of porting the site to GatsbyJS v2; getting source plugins moved over and tested takes prioirty over aesthetics on the site, so most of my focus is there right now.  You can follow development of the site in the <a href="https://github.com/jamesdanylik/www-jamesdanylik-com">github repository here</a>, following the build logs at <a href="https://travis-ci.org/jamesdanylik/www-jamesdanylik-com">TravisCI here</a>, or check out one of my GatsbyJS source plugins that powers this site:
 	  <ProjectTracker npmsEdges={npmsEdges} />
 	  </div>
-	  <div>Now viewing commit <a href={`https://github.com/jamesdanylik/www-jamesdanylik-com/commit/${buildCommit}`}>{buildCommit.slice(0,7)}</a>, from #{travisBuild} {buildTime.toLocaleString()}.</div>
+	  <div>
+	    Now viewing commit <a href={`https://github.com/jamesdanylik/www-jamesdanylik-com/commit/${buildCommit}`}>
+	      {buildCommit.slice(0,7)}
+	    </a>, from <a href={`https://travis-ci.org/jamesdanylik/www-jamesdanylik-com/builds/${travisId}`}>
+	      #{travisBuild}
+	    </a> {buildTime.toLocaleString()}.
+	  </div>
           <PostListing postEdges={postEdges} />
 	  <LastFM lastEdges={lastEdges} />
 	  <Steam gamesEdges={steamEdges} />
