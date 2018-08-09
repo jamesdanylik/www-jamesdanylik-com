@@ -8,6 +8,7 @@ import config from "../../data/SiteConfig";
 
 import Steam from "../components/Steam/Steam"
 import ProjectTracker from "../components/ProjectTracker/ProjectTracker"
+import Goodreads from "../components/Goodreads/Goodreads"
 
 class Index extends React.Component {
   render() {
@@ -15,6 +16,7 @@ class Index extends React.Component {
     const steamEdges = this.props.data.allSteamGame.edges
     const npmsEdges = this.props.data.allNpmsPackage.edges
     const buildCommit = this.props.data.allGitCommit.edges[0].node.commitHash
+    const reviewEdges = this.props.data.allGoodreadsShelf.edges
     const buildTime = new Date(Date.parse(this.props.data.site.buildTime))
     return (
       <Layout location={this.props.location}>
@@ -29,6 +31,7 @@ class Index extends React.Component {
 	  <div>Now viewing commit <a href={`https://github.com/jamesdanylik/www-jamesdanylik-com/commit/${buildCommit}`}>{buildCommit.slice(0,7)}</a>, from {buildTime.toLocaleString()}.</div>
           <PostListing postEdges={postEdges} />
 	  <Steam gamesEdges={steamEdges} />
+	  <Goodreads reviewEdges={reviewEdges} />
         </div>
       </Layout>
     );
@@ -82,6 +85,37 @@ export const pageQuery = graphql`
 	node {
 	  id
 	  commitHash
+	}
+      }
+    }
+    allGoodreadsShelf {
+      edges {
+	node {
+	  id
+	  name
+	  reviews {
+	    id
+	    rating
+	    recommended_by
+	    recommended_for
+	    started_at
+	    read_at
+	    date_added
+	    date_updated
+	    read_count
+	    book {
+	      id
+	      title
+	      image_url
+	      link
+	      publication_year
+	      authors {
+		id
+		link
+		name
+	      }
+	    }
+	  }
 	}
       }
     }
