@@ -5543,9 +5543,9 @@ gatsby-source-filesystem@next:
     valid-url "^1.0.9"
     xstate "^3.1.0"
 
-gatsby-source-git-commit@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/gatsby-source-git-commit/-/gatsby-source-git-commit-0.0.2.tgz#385e35b439819966d31aa5d6ea7593b7abc04528"
+gatsby-source-git-commit@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/gatsby-source-git-commit/-/gatsby-source-git-commit-0.0.3.tgz#b19f8a2aeb7327fdb29f1c8750e28a4edb1f2cf7"
   dependencies:
     child_process "^1.0.2"
 
