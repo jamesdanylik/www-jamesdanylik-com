@@ -9,6 +9,8 @@ import config from "../../data/SiteConfig";
 import Steam from "../components/Steam/Steam"
 import ProjectTracker from "../components/ProjectTracker/ProjectTracker"
 import Goodreads from "../components/Goodreads/Goodreads"
+import LastFM from "../components/LastFM/LastFM"
+
 
 class Index extends React.Component {
   render() {
@@ -17,6 +19,7 @@ class Index extends React.Component {
     const npmsEdges = this.props.data.allNpmsPackage.edges
     const buildCommit = this.props.data.allGitCommit.edges[0].node.commitHash
     const reviewEdges = this.props.data.allGoodreadsShelf.edges
+    const lastEdges = this.props.data.allLastfmTrack.edges
     const buildTime = new Date(Date.parse(this.props.data.site.buildTime))
     return (
       <Layout location={this.props.location}>
@@ -30,6 +33,7 @@ class Index extends React.Component {
 	  </div>
 	  <div>Now viewing commit <a href={`https://github.com/jamesdanylik/www-jamesdanylik-com/commit/${buildCommit}`}>{buildCommit.slice(0,7)}</a>, from {buildTime.toLocaleString()}.</div>
           <PostListing postEdges={postEdges} />
+	  <LastFM lastEdges={lastEdges} />
 	  <Steam gamesEdges={steamEdges} />
 	  <Goodreads reviewEdges={reviewEdges} />
         </div>
@@ -85,6 +89,29 @@ export const pageQuery = graphql`
 	node {
 	  id
 	  commitHash
+	}
+      }
+    }
+    allLastfmTrack {
+      edges {
+	node {
+	  name
+	  url
+	  image {
+	    text
+	    size
+	  }
+	  artist {
+	    name
+	    url
+	  }
+	  album{
+	    name
+	    url
+	  }
+	  playbacks {
+	    id
+	  }
 	}
       }
     }
