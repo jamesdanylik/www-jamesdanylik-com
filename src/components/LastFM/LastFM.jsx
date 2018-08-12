@@ -1,4 +1,50 @@
 import React, { Component } from "react"
+import { graphql } from "gatsby"
+
+export const testLastFM = graphql`
+  fragment TestLastfm on RootQueryType {
+    allLastfmPlayback {
+      edges {
+        node {
+          id
+          date
+          track {
+            id
+            name
+            loved
+            mbid
+            streamable
+            url
+            image {
+              text
+              size
+            }
+            artist {
+              id
+              name
+              url
+              mbid
+              image {
+                text
+                size
+              }
+            }
+            album {
+              id
+              name
+              url
+              mbid
+            }
+            playbacks {
+              id
+              date
+            }
+          }
+        }
+      }
+    }
+  }
+`
 
 class LastFM extends Component {
   constructor() {
@@ -7,7 +53,6 @@ class LastFM extends Component {
   }
 
   getImage(arr, size) {
-    console.log(arr)
     for( var i = 0; i < arr.length; i++) {
       if( arr[i].size === size && (arr[i].text !== "" )) {
 	return arr[i].text
@@ -37,7 +82,6 @@ class LastFM extends Component {
 	{
 	  topTracks.map(tn => {
 	    const track = tn.node
-	    console.log(track.image)
 	    const imageUrl = this.getImage(track.image, "large") ? this.getImage(track.image, "large") : "https://lastfm-img2.akamaized.net/i/u/174s/c6f59c1e5e7240a4c0d427abd71f3dbb"
 	    return (
 	      <li key={track.url}>

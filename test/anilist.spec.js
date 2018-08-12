@@ -1,7 +1,7 @@
 const puppeteer = require("puppeteer")
 const { port } = require("../jest-puppeteer.config").server
 
-const testRoot = `http://localhost:${port}/testAnilist`
+const testRoot = `http://localhost:${port}/test/anilist`
 
 jest.setTimeout(30000)
 

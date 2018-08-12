@@ -1,4 +1,32 @@
 import React, { Component } from "react"
+import { graphql } from "gatsby"
+
+export const testGoodreads = graphql`
+  fragment TestGoodreads on RootQueryType {
+    allGoodreadsShelf {
+      edges {
+        node {
+          id
+          name
+          reviews {
+            id
+            book {
+              id
+              title
+              authors {
+                id
+                name
+                books {
+                  id
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`
 
 class Goodreads extends Component {
   constructor() {
@@ -23,8 +51,6 @@ class Goodreads extends Component {
     const currentBook = this.getShelf("currently-reading").reviews[0].book
     const lastBook = this.getShelf("read").reviews[0].book
    
-    console.log(currentBook)
- 
     return (
       <div>
 	<h3>Books</h3>

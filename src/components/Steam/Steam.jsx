@@ -1,5 +1,24 @@
 import React, { Component } from "react"
 import Link from "gatsby-link"
+import { graphql } from "gatsby"
+
+export const testSteam = graphql`
+  fragment TestSteam on RootQueryType {
+    allSteamGame {
+      edges {
+        node {
+          id
+          name
+          playtime_2weeks
+          playtime_forever
+          img_icon_url
+          img_logo_url
+        }
+      }
+    }
+  }
+`
+
 
 class Steam extends Component {
   render() {

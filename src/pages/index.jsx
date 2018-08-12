@@ -10,7 +10,8 @@ import Steam from "../components/Steam/Steam"
 import ProjectTracker from "../components/ProjectTracker/ProjectTracker"
 import Goodreads from "../components/Goodreads/Goodreads"
 import LastFM from "../components/LastFM/LastFM"
-
+import Anilist from "../components/Anilist/Anilist"
+import BuildMeta from "../components/BuildMeta/BuildMeta"
 
 class Index extends React.Component {
   render() {

@@ -1,4 +1,48 @@
 import React from "react"
+import { graphql } from "gatsby"
+
+export const testNpms = graphql`
+  fragment TestNpms on RootQueryType {
+    allNpmsPackage {
+      edges {
+        node {
+          id
+          name
+          collected {
+            npm {
+              dependentsCount
+              starsCount
+              downloads {
+                from
+                to
+                count
+              }
+              starsCount
+            }
+            github {
+              starsCount
+              forksCount
+              subscribersCount
+              starsCount
+            }
+            metadata {
+              name
+              version
+              description
+              date
+              links {
+                npm
+                homepage
+                repository
+                bugs
+              }
+            }
+          }
+        }
+      }
+    }	
+  }
+`
 
 class ProjectTracker extends React.Component {
   render() {
