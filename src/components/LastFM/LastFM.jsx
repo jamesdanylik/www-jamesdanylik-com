@@ -47,20 +47,6 @@ export const testLastFM = graphql`
 `
 
 class LastFM extends Component {
-  constructor() {
-    super()
-
-  }
-
-  getImage(arr, size) {
-    for( var i = 0; i < arr.length; i++) {
-      if( arr[i].size === size && (arr[i].text !== "" )) {
-	return arr[i].text
-      }
-    }
-    return false
-  }
-
   componentDidMount() {
     const sortedTracks = this.props.lastEdges.sort((a, b) => {
       return a.node.playbacks.length - b.node.playbacks.length
@@ -68,13 +54,20 @@ class LastFM extends Component {
 
     const topThree = sortedTracks.slice(0,3)
   }
+  
+  getImage(arr, size) {
+    for( let i = 0; i < arr.length; i += 1) {
+      if( arr[i].size === size && (arr[i].text !== "" )) {
+	return arr[i].text
+      }
+    }
+    return false
+  } 
 
   render() {
-    const sortedTracks = this.props.lastEdges.sort((a, b) => {
-      return b.node.playbacks.length - a.node.playbacks.length
-    })
-
+    const sortedTracks = this.props.lastEdges.sort((a, b) => (b.node.playbacks.length - a.node.playbacks.length))
     const topTracks= sortedTracks.slice(0,5)
+
     return (
       <div>
 	<h3>Music</h3>
