@@ -46,7 +46,7 @@ export const testNpms = graphql`
 
 class ProjectTracker extends React.Component {
   render() {
-    const npmsEdges = this.props.npmsEdges;
+    const { npmsEdges } = this.props
     return (
       <div>
         <ul>
