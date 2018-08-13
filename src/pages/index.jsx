@@ -19,7 +19,7 @@ class Index extends React.Component {
     const steamEdges = this.props.data.allSteamGame.edges;
     const npmsEdges = this.props.data.allNpmsPackage.edges;
     const buildCommit = this.props.data.allGitCommit.edges[0].node.commitHash;
-    const { travisNum, travisId } = this.props.data.allGitCommit.edges[0].node
+    const { travisNum, travisId } = this.props.data.allGitCommit.edges[0].node;
     const reviewEdges = this.props.data.allGoodreadsShelf.edges;
     const lastEdges = this.props.data.allLastfmTrack.edges;
     const buildTime = new Date(Date.parse(this.props.data.site.buildTime));

@@ -27,11 +27,11 @@ class Steam extends Component {
           {this.props.gamesEdges.map(game => (
             <div key={game.node.id}>
               <img
-                alt={`${game.node.name} cover`} 
+                alt={`${game.node.name} cover`}
                 src={`https://proxy.danylik.com/steam/steamcommunity/public/images/apps/${
                   game.node.appid
                 }/${game.node.img_logo_url}.jpg`}
-              /> 
+              />
               <a href={`https://store.steampowered.com/app/${game.node.appid}`}>
                 <h4>{game.node.name}</h4>
               </a>

@@ -1,35 +1,37 @@
-const puppeteer = require("puppeteer")
-const { port } = require("../jest-puppeteer.config").server
+const puppeteer = require("puppeteer");
+const { port } = require("../jest-puppeteer.config").server;
 
-const siteRoot = `http://localhost:${port}`
+const siteRoot = `http://localhost:${port}`;
 
-jest.setTimeout(30000)
+jest.setTimeout(30000);
 
 describe("Homepage", () => {
-  let browser = ""
-  let page = ""
+  let browser = "";
+  let page = "";
 
   beforeAll(async () => {
-    browser = await puppeteer.launch({args: ["--no-sandbox", "--disable-setuid-sandbox"]})
-    page = await browser.newPage()
+    browser = await puppeteer.launch({
+      args: ["--no-sandbox", "--disable-setuid-sandbox"]
+    });
+    page = await browser.newPage();
 
     page.emulate({
       viewport: {
-	width: 500,
-	height: 2400
+        width: 500,
+        height: 2400
       },
       userAgent: ""
-    })
+    });
 
-    await page.goto(siteRoot)
-  })
+    await page.goto(siteRoot);
+  });
 
   afterAll(async () => {
-    browser.close()
-  })
+    browser.close();
+  });
 
   test("Site title is visible", async () => {
-    const t = await page.title()
-    expect(t).toBe("james.danylik.com")
-  })
-})
+    const t = await page.title();
+    expect(t).toBe("james.danylik.com");
+  });
+});

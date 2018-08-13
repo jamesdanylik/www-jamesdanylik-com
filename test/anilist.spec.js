@@ -1,47 +1,24 @@
-const puppeteer = require("puppeteer")
-const { port } = require("../jest-puppeteer.config").server
-
-const testRoot = `http://localhost:${port}/test/anilist`
-
-jest.setTimeout(30000)
+const { getTestData } = require("./browser");
 
 describe("Anilist Source Plugin", () => {
-  let browser = ""
-  let page = ""
+  let title = "";
+  let text = "";
+  let data = "";
 
   beforeAll(async () => {
-    browser = await puppeteer.launch({args: ["--no-sandbox", "--disable-setuid-sandbox"]})
-    page = await browser.newPage()
-
-    page.emulate({
-      viewport: {
-	width: 500,
-	height: 2400
-      },
-      userAgent: ""
-    })
-
-    await page.goto(testRoot)
-  })
-
-  afterAll(async () => {
-    browser.close()
-  })
-
-  const getData = async () => {
-    const rawText = await page.$eval("#test-data", e => e.innerHTML )
-    return JSON.parse(rawText)
-  }
+    const testData = await getTestData("anilist");
+    const { title: ti, text: te } = testData;
+    title = ti;
+    text = te;
+  });
 
   test("Site title tag matches expected (test page exists)", async () => {
-    const t = await page.title()
-    expect(t).toBe("gatsby-source-anilist test page")
-  })
+    expect(title).toBe("gatsby-source-anilist test page");
+  });
 
-  test("Inner HTML is parseable JSON", async ()  => {
-    const data = await getData()
+  test("Inner HTML is parseable JSON", async () => {
+    data = JSON.parse(text);
 
-    expect(data.length).toBeGreaterThan(0)
-  })
- 
-})
+    expect(data.length).toBeGreaterThan(0);
+  });
+});
