@@ -4,4 +4,4 @@ module.exports = {
     port: 9000,
     launchTimeout: 30000
   }
-}
+};

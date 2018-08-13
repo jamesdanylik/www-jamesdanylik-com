@@ -45,7 +45,7 @@ export default class MainLayout extends React.Component {
         <Helmet>
           <title>{`${config.siteTitle} |  ${this.getLocalTitle()}`}</title>
           <meta name="description" content={config.siteDescription} />
-	  <html lang="en" />
+          <html lang="en" />
         </Helmet>
         {children}
       </div>

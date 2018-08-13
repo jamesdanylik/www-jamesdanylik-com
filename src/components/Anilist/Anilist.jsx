@@ -1,5 +1,5 @@
-import React, { Component } from "react"
-import { graphql } from "gatsby"
+import React, { Component } from "react";
+import { graphql } from "gatsby";
 
 export const testAnilist = graphql`
   fragment TestAnilist on RootQueryType {
@@ -39,16 +39,16 @@ export const testAnilist = graphql`
       }
     }
   }
-`
+`;
 
 class Anilist extends Component {
   render() {
-    return(
+    return (
       <div>
-	<h3>Seasonal Anilist</h3>
+        <h3>Seasonal Anilist</h3>
       </div>
-    )
+    );
   }
 }
 
-export default Anilist
+export default Anilist;

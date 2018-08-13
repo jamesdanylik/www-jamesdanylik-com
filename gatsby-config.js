@@ -164,12 +164,13 @@ module.exports = {
         ]
       }
     },
-    { // Start of plugins for james.danylik.com
+    {
+      // Start of plugins for james.danylik.com
       resolve: "gatsby-source-lastfm",
       options: {
-	api_key: process.env.LASTFM_APIKEY,
-	username: process.env.LASTFM_USERNAME,
-	limit: 400
+        api_key: process.env.LASTFM_APIKEY,
+        username: process.env.LASTFM_USERNAME,
+        limit: 400
       }
     },
     {
@@ -182,8 +183,8 @@ module.exports = {
     {
       resolve: "@jamesdanylik/gatsby-source-goodreads",
       options: {
-	key: process.env.GOODREADS_APIKEY,
-	id: process.env.GOODREADS_USERID 
+        key: process.env.GOODREADS_APIKEY,
+        id: process.env.GOODREADS_USERID
       }
     },
     {
@@ -192,20 +193,20 @@ module.exports = {
     {
       resolve: "gatsby-source-npms",
       options: {
-	packages: [
-	  "gatsby-source-lastfm",
-	  "@jamesdanylik/gatsby-source-goodreads",
-	  "gatsby-source-steam",
-	  "gatsby-source-anilist",
-	  "gatsby-source-npms",
-	  "gatsby-source-git-commit",
-	  "gatsby-source-myanimelist"
-	]
+        packages: [
+          "gatsby-source-lastfm",
+          "@jamesdanylik/gatsby-source-goodreads",
+          "gatsby-source-steam",
+          "gatsby-source-anilist",
+          "gatsby-source-npms",
+          "gatsby-source-git-commit",
+          "gatsby-source-myanimelist"
+        ]
       }
     },
     {
-      resolve: 'gatsby-source-anilist',
-      options: { 
+      resolve: "gatsby-source-anilist",
+      options: {
         queries: [
           `
 	    {

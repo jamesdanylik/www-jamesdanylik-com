@@ -1,8 +1,8 @@
-import React, { Component } from "react"
-import { graphql } from "gatsby"
+import React, { Component } from "react";
+import { graphql } from "gatsby";
 
 export const testGitcommit = graphql`
-  fragment TestGitcommit on RootQueryType { 
+  fragment TestGitcommit on RootQueryType {
     allGitCommit {
       edges {
         node {
@@ -13,15 +13,12 @@ export const testGitcommit = graphql`
       }
     }
   }
-`
+`;
 
 class BuildMeta extends Component {
   render() {
-    return (
-      <div>
-      </div>
-    )
+    return <div />;
   }
 }
 
-export default BuildMeta
+export default BuildMeta;

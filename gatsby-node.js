@@ -98,56 +98,55 @@ exports.createPages = ({ graphql, actions }) => {
   const { createPage } = actions;
 
   return new Promise((resolve, reject) => {
-
-    const testPage = path.resolve("src/templates/test.jsx")
+    const testPage = path.resolve("src/templates/test.jsx");
     createPage({
       path: "/test/lastfm",
       component: testPage,
       context: {
-	pluginName: "gatsby-source-lastfm",
-	pluginQuery: "allLastfmPlayback"
+        pluginName: "gatsby-source-lastfm",
+        pluginQuery: "allLastfmPlayback"
       }
-    })
+    });
     createPage({
       path: "/test/goodreads",
       component: testPage,
       context: {
-	pluginName: "gatsby-source-goodreads",
-	pluginQuery: "allGoodreadsShelf"
+        pluginName: "gatsby-source-goodreads",
+        pluginQuery: "allGoodreadsShelf"
       }
-    })
+    });
     createPage({
       path: "/test/steam",
       component: testPage,
       context: {
-	pluginName: "gatsby-source-steam",
-	pluginQuery: "allSteamGame"
+        pluginName: "gatsby-source-steam",
+        pluginQuery: "allSteamGame"
       }
-    })
+    });
     createPage({
       path: "/test/anilist",
       component: testPage,
       context: {
-	pluginName: "gatsby-source-anilist",
-	pluginQuery: "allAnilistMedialistcollection"
+        pluginName: "gatsby-source-anilist",
+        pluginQuery: "allAnilistMedialistcollection"
       }
-    })
+    });
     createPage({
       path: "/test/npms",
       component: testPage,
       context: {
-	pluginName: "gatsby-source-npms",
-	pluginQuery: "allNpmsPackage"
+        pluginName: "gatsby-source-npms",
+        pluginQuery: "allNpmsPackage"
       }
-    })
+    });
     createPage({
       path: "/test/gitcommit",
       component: testPage,
       context: {
-	pluginName: "gatsby-source-git-commit",
-	pluginQuery: "allGitCommit"
+        pluginName: "gatsby-source-git-commit",
+        pluginQuery: "allGitCommit"
       }
-    })
+    });
 
     // old
     const postPage = path.resolve("src/templates/post.jsx");
