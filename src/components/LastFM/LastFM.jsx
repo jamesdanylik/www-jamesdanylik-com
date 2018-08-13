@@ -51,11 +51,9 @@ class LastFM extends Component {
     const sortedTracks = this.props.lastEdges.sort((a, b) => {
       return a.node.playbacks.length - b.node.playbacks.length
     })
-
-    const topThree = sortedTracks.slice(0,3)
   }
   
-  getImage(arr, size) {
+  static getImage(arr, size) {
     for( let i = 0; i < arr.length; i += 1) {
       if( arr[i].size === size && (arr[i].text !== "" )) {
 	return arr[i].text
@@ -75,7 +73,7 @@ class LastFM extends Component {
 	{
 	  topTracks.map(tn => {
 	    const track = tn.node
-	    const imageUrl = this.getImage(track.image, "large") ? this.getImage(track.image, "large") : "https://lastfm-img2.akamaized.net/i/u/174s/c6f59c1e5e7240a4c0d427abd71f3dbb"
+	    const imageUrl = LastFM.getImage(track.image, "large") ? LastFM.getImage(track.image, "large") : "https://lastfm-img2.akamaized.net/i/u/174s/c6f59c1e5e7240a4c0d427abd71f3dbb"
 	    return (
 	      <li key={track.url}>
 		<img width="160px" height="160px" src={imageUrl} />
