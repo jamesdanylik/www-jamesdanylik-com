@@ -34,8 +34,7 @@ class MahjongPage extends Component {
     const data = {}
     const MAHJONG_CSV_URL =
       "https://docs.google.com/spreadsheets/d/e/2PACX-1vTnhaUOyUmX4o7bQf1nUcWNr37WcQR80S7_fU4_exvwXBXU7QXTHVtwaJv5Q2qWlk6oEDH2jDDEW3Vw/pub?gid=869579873&single=true&output=csv";
-    const TENHOU_JSON_URL =
-      "https://proxy.danylik.com/nodocchi/api/listuser.php?name=0ddba11";
+
 
     // Process response from House Google Sheet
     parse(await (await fetch(MAHJONG_CSV_URL)).text(), (err, csv) => {
@@ -299,27 +298,103 @@ class MahjongPage extends Component {
 	return previous
       }, {datasets:[], labels: []})
 
-      console.log(threeData)
-      console.log(fourData)
 
       this.setState({threeData, fourData, dataOptions: newOptions, status: "Created house datasets..."})
 
-      console.log(data);
-      console.log(table3Man)
-      console.log(table4Man)
-      console.log(houseStartDate)
-      console.log(houseEndDate)
-    });
 
-    this.setState({ status: "Loading Tenhou data..." });
+      this.setState({ status: "Loading Tenhou data..." });
 
-    const rawTenhou = await fetch(TENHOU_JSON_URL).then(response =>
-      response.json()
-    );
+      Object.keys(data).forEach(player => {
+	if(Object.keys(data[player]).length > 1) {
+	  Object.keys(data[player]).forEach(async (alias) => {
+	    if( alias !== "house" ) {
+	      this.setState({status: `Fetching Tenhou for ${player} as ${alias}...`})
+	      const TENHOU_JSON_URL =
+		`https://proxy.danylik.com/nodocchi/api/listuser.php?name=${alias}`
+	      const tenhou = await fetch(TENHOU_JSON_URL).then(response => response.json())
+	    
+	      if(tenhou.name === alias) {
+		tenhou.list.forEach(game => {
+		  let score = 0
+		  if(game.playernum === "4") {
+		    for(let i = 1; i <= 4; i += 1) {
+		      if(game[`player${i}`] === alias) {
+			score = Number(game[`player${i}ptr`])
+		      }
+		    }
+		    if(data[player][alias].hasOwnProperty("four")) {
+		      const { score: subtotal } = data[player][alias].four.overall
+		      data[player][alias].four.overall.data.push({
+			t: new Date(game.starttime*1000),
+			y: score
+		      })
+		      data[player][alias].four.overall.count += 1
+		      data[player][alias].four.overall.score = subtotal + score
+		    } else {
+		      data[player][alias].four = {
+			overall: {
+			  data: [{
+			    t: new Date(game.starttime*1000),
+			    y: 0
+			  }, {
+			    t: new Date(game.starttime*1000),
+			    y: score
+			  }],
+			  score,
+			  count: 1
+			},
+			seasons: []
+		      }
+		    }
+		  } else if (game.playernum === "3") {
+		    for(let i = 1; i <= 3; i += 1) {
+		      if(game[`player${i}`] === alias) {
+			score = Number(game[`player${i}ptr`])
+		      }
+		    }
+		    if(data[player][alias].hasOwnProperty("three")) {
+		      const { score: subtotal } = data[player][alias].three.overall
+		      data[player][alias].three.overall.data.push({
+			t: new Date(game.starttime*1000),
+			y: score
+		      })
+		      data[player][alias].three.overall.count += 1
+		      data[player][alias].three.overall.score = subtotal + score
+		    } else {
+		      data[player][alias].three = {
+			overall: {
+			  data: [{
+			    t: new Date(game.starttime * 1000),
+			    y: 0
+			  }, {
+			    t: new Date(game.starttime * 1000),
+			    y: score
+			  }],
+			  score,
+			  count: 1
+			},
+			seasons: []
+		      }
+		    }
+		  } else {
+		    console.log("Unknown game record")
+		  }
+		})
+	      } else {
+		console.log(`Error in parsing tenhou for ${alias}`)
+	      }
 
-    console.log(rawTenhou);
 
-    this.setState({ status: "Done loading Tenhou" });
+	    }
+	  })
+	}
+      })
+
+
+      this.setState({ status: "Done loading Tenhou" });
+      console.log(data)
+    })
+
   }
 
   render() {
