@@ -407,13 +407,13 @@ class MahjongPage extends Component {
 	}
       })
 
-      let tenhouFour = {
+      const tenhouFour = {
 	datasets: [],
-	labels: data.James.house.four.overall.data.map(point => point.t : 0)
+	labels: data.James.house.four.overall.data.map(point => point ? point.t : 0)
       }
 
-      for (var player in data) {
-	for (var alias in data[player]) {
+      for (const player in data) {
+	for (const alias in data[player]) {
 	  if( alias !== "house") {
 	    console.log(data[player][alias])
 	    if(data[player][alias].four) {
@@ -452,9 +452,9 @@ class MahjongPage extends Component {
 
     return (
       <Layout location={this.props.location}>
-	<Helmet title={`Mahjong | ${config.siteTitle}`} />
-	<div>{status}</div>
-	{c1}
+        <Helmet title={`Mahjong | ${config.siteTitle}`} />
+        <div>{status}</div>
+        {c1}
       </Layout>
     );
   }
