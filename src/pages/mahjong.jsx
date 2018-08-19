@@ -14,12 +14,18 @@ class MahjongPage extends Component {
   constructor(props) {
     super(props);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
+    console.log("constructor")
+  }
+
+  componentWillMount() {
+    console.log("componentWillMount")
   }
 
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
     this.fetchSheetScores();
+    console.log("componentDidMount")
   }
 
   componentWillUnmount() {
@@ -29,6 +35,21 @@ class MahjongPage extends Component {
   updateWindowDimensions() {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
+
+  // fetch google sheet
+  // parse, if success feed to next stage
+  //
+  // preprocess google sheet into tables and get players
+  // if successful, feed to next stage
+  //
+  // process house games from previous
+  //
+  // check for tenhou usernames and fetch
+  //   wait for all to complete, then feed to next stage
+  //
+  // process tenhou games from previous
+  //
+  // done
 
   async fetchSheetScores() {
     const data = {}
@@ -64,7 +85,7 @@ class MahjongPage extends Component {
 
 
 	if( pHouseName !== "" && pHouseName !== "House Player" ) {
-	  if( data.hasOwnProperty( pHouseName ) ) {
+	  if( data[pHouseName] ) {
 	    data[pHouseName][pTenhouName] = {}
 	  } else {
 	    data[pHouseName] = {
@@ -89,8 +110,8 @@ class MahjongPage extends Component {
 
 
 	  game4Man.slice(1, 5).forEach(player => {
-	    if( data.hasOwnProperty(player) ) {
-	      if ( data[player].hasOwnProperty("house") ) {
+	    if( data[player] ) {
+	      if ( data[player].house ) {
 		data[player].house.four = {
 		  overall: {},
 		  seasons: []
@@ -129,8 +150,8 @@ class MahjongPage extends Component {
 	  }
 
 	  game3Man.slice(1, 4).forEach(player => {
-	    if( data.hasOwnProperty(player) ) {
-	      if( data[player].hasOwnProperty("house") ){
+	    if( data[player] ) {
+	      if( data[player].house ){
 		data[player].house.three = {
 		  overall: {},
 		  seasons: []
@@ -166,7 +187,7 @@ class MahjongPage extends Component {
 	  const player = game[1+i]
 	  const score = Number(game[4+i])
 	  
-	  if(data[player].house.three.overall.hasOwnProperty("score")) {
+	  if( data[player].house.three.overall.score ) {
 	    const { score: subtotal } = data[player].house.three.overall
 
 	    data[player].house.three.overall.data.push({
@@ -198,7 +219,7 @@ class MahjongPage extends Component {
 	  const player = game[1+i]
 	  const score = Number(game[5+i])
 
-	  if(data[player].house.four.overall.hasOwnProperty("score")) {
+	  if( data[player].house.four.overall.score ) {
 	    const {score: subtotal } = data[player].house.four.overall
 
 	    data[player].house.four.overall.data.push({
@@ -278,7 +299,7 @@ class MahjongPage extends Component {
       console.log(data)
 
       const houseFour = Object.keys(data).reduce((previous, current) => {
-	if( data[current].house.hasOwnProperty("four") ) {
+	if( data[current].house.four ) {
 	previous.labels = data.James.house.four.overall.data.map(point => point.t ? point.t : 0)
 	previous.datasets.push({
 	  label: current,
@@ -320,7 +341,7 @@ class MahjongPage extends Component {
 			score = Number(game[`player${i}ptr`])
 		      }
 		    }
-		    if(data[player][alias].hasOwnProperty("four")) {
+		    if(data[player][alias].four) {
 		      const { score: subtotal } = data[player][alias].four.overall
 		      data[player][alias].four.overall.data.push({
 			t: new Date(game.starttime*1000),
@@ -350,7 +371,7 @@ class MahjongPage extends Component {
 			score = Number(game[`player${i}ptr`])
 		      }
 		    }
-		    if(data[player][alias].hasOwnProperty("three")) {
+		    if(data[player][alias].three) {
 		      const { score: subtotal } = data[player][alias].three.overall
 		      data[player][alias].three.overall.data.push({
 			t: new Date(game.starttime*1000),
@@ -395,7 +416,7 @@ class MahjongPage extends Component {
 	for (var alias in data[player]) {
 	  if( alias !== "house") {
 	    console.log(data[player][alias])
-	    if(data[player][alias].hasOwnProperty("four")) {
+	    if(data[player][alias].four) {
 	      console.log("This ran")
 	    tenhouFour.datasets.push({
                 label: `${player} as ${alias}`,
@@ -425,21 +446,15 @@ class MahjongPage extends Component {
   }
 
   render() {
-    if (this.state && this.state.houseThree) {
-      return (
-        <Layout location={this.props.location}>
-          <Helmet title={`Mahjong | ${config.siteTitle}`} />
-          <div>{this.state.status}</div>
-          <div>{this.state.error? this.state.error : "No errors!"}</div>
-          <Line options={this.state.dataOptions} data={this.state.houseThree} />
-          <Line options={this.state.dataOptions} data={this.state.houseFour} />
-          <Line options={this.state.dataOptions} data={this.state.tenhouFour} />
-        </Layout>
-      );
-    }
+    const status = (this.state && this.state.status) ? this.state.status : "Initializing..."
+    const cOptions = (this.state && this.state.dataOptions) ? this.state.dataOptions : ""
+    const c1 = (this.state && this.state.houseThree) ? (<Line options={cOptions} data={this.state.houseThree} />) : ""
+
     return (
       <Layout location={this.props.location}>
-        <div>Loading</div>
+	<Helmet title={`Mahjong | ${config.siteTitle}`} />
+	<div>{status}</div>
+	{c1}
       </Layout>
     );
   }
