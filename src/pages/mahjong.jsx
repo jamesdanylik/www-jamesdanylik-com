@@ -5,7 +5,7 @@ import { Line } from "react-chartjs-2"
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
 
-const parse = require("csv-parse");
+const parse = require("csv-parse/lib/sync");
 
 import Layout from "../layout";
 import config from "../../data/SiteConfig";
@@ -24,8 +24,165 @@ class MahjongPage extends Component {
   componentDidMount() {
     this.updateWindowDimensions();
     window.addEventListener("resize", this.updateWindowDimensions);
-    this.fetchSheetScores();
     console.log("componentDidMount")
+
+    const MAHJONG_CSV_URL = "https://proxy.danylik.com/gsheets/spreadsheets/d/e/2PACX-1vTnhaUOyUmX4o7bQf1nUcWNr37WcQR80S7_fU4_exvwXBXU7QXTHVtwaJv5Q2qWlk6oEDH2jDDEW3Vw/pub?gid=869579873&single=true&output=csv" 
+
+    fetch(MAHJONG_CSV_URL)
+      .then(resp => resp.text())
+      .then(txt => parse(txt))
+      .then(csv => {
+	const data = {
+	  players: {},
+	  tenhouUsers: []
+	}
+	const table3Man = []
+	const table4Man = []
+
+	console.log(csv)
+
+	csv.forEach(row => {
+	  const [pHouseName, pTenhouName] = row.slice(-2)
+	  const [s1, s2] = row.slice(-4, -2)
+	  const game4Man = row.slice(7, 17)
+	  const game3Man = row.slice(0, 7)
+
+	  
+	  if( pHouseName !== "" && pHouseName !== "House Player" ) {
+	    if ( data[pHouseName] ) {
+	      data.players[pHouseName][pTenhouName] = {}
+	    } else {
+	      data.players[pHouseName] = {
+		house: {},
+		[ pTenhouName ]: {}
+	      }
+	    }
+	    data.tenhouUsers.push(pTenhouName)
+	  }
+
+	  [{
+	    game: game4Man,
+	    num: 4,
+	    word: "four",
+	    table: table4Man,
+	  }, {
+	    game: game3Man,
+	    num: 3,
+	    word: "three",
+	    table: table3Man
+	  }].forEach(({game, num, word, table}) => {
+	    if( game[0] !== "" && game[0] !== "Time" ) {
+	      game.slice(1, 1+num).forEach(player => {
+		const skeleton = {overall: {}, seasons: []}
+		if( data.players[player] ) {
+		  if ( data.players[player].house ) {
+		    data.players[player].house[word] = skeleton
+		  } else {
+		    data.players[player].house = {
+		      [word] : skeleton
+		    }
+		  }
+		} else {
+		  data.players[player] = {
+		    house: {
+		      [word]: skeleton
+		    }
+		  }
+		}
+	      })
+	    table.push(game)
+	    }
+	  })
+	}) // close csv foreach
+	return [data, table4Man, table3Man]
+      })
+      .then(([data, table4Man, table3Man]) => {
+
+	const getHouseName = (tenhouName) => {
+	  for (const houseName in data.players) {
+	    if( data.players[houseName].tenhouName ) {
+	      return houseName
+	    }
+	  }
+	}
+
+	const processGame = (game) => {
+	  let num = 0
+	  let word = "zero"
+	  let aliases = ["unknown"]
+	  let date = "unknown"
+	  if(Array.isArray(game)) {
+	    aliases = ["house"]
+	    date = new Date(Date.parse(game[0]))
+	    if( game.length === 7) {
+	      num = 3
+	      word = "three"
+	    } else if ( game.length === 10 ) {
+	      num = 4
+	      word = "four"
+	    }
+	  } else if (Object.isObject(game)) {
+	    // get all our aliases from the game here
+	    date = new Date(game.starttime * 1000)
+	    aliases = data.tenhouUsers
+	    if ( game.playernum === "4" ) {
+	      num = 4
+	      word = "four"
+	    } else if (game.playernum === "3") {
+	      num = 3
+	      word = "three"
+	    }
+	  }
+
+	  aliases.forEach(alias => {
+	    for( let i = 0; i < num; i += 1) {
+	      let player = "unknown"
+	      let score = "unknown"
+	      if(alias === "house") {
+		player = game[1+i]
+		score = Number(game[1+num+i])
+	      } else if (game[`player${i+1}`] === alias) {
+		player = getHouseName(alias)
+		score = Number(game[`player${i+1}ptr`])
+	      } else {
+		continue
+	      }
+
+	    if( data.players[player][alias][word].overall.score ) {
+	      const {score: subtotal } = data.players[player][alias][word].overall
+
+	      data.players[player][alias][word].overall.data.push({
+		t: date,
+		y: subtotal + score
+	      })
+	      data.players[player][alias][word].overall.score = subtotal + score
+	      data.players[player][alias][word].overall.count += 1
+	    } else {
+	      data.players[player][alias][word].overall = {
+		data: [{
+		  t: new Date(Date.parse("01-15-2017")),
+		  y: 0
+		}, {
+		  t: date,
+		  y: score
+		}],
+		score,
+		count: 1
+	      }
+	    }
+	  }
+	  })
+	}
+
+	[table4Man, table3Man].forEach(table => {
+	  table.forEach(game => {
+	    processGame(game)
+	  })
+	})
+
+	console.log(data)
+      })
+
   }
 
   componentWillUnmount() {
