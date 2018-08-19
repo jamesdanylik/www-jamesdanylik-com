@@ -255,7 +255,7 @@ class MahjongPage extends Component {
 	}
       }
 
-      const threeData = Object.keys(data).reduce((previous, current) => {
+      const houseThree = Object.keys(data).reduce((previous, current) => {
 	previous.labels = data.James.house.three.overall.data.map(point => point.t ? point.t : 0)
         previous.datasets.push({
           label: current,
@@ -277,7 +277,7 @@ class MahjongPage extends Component {
 
       console.log(data)
 
-      const fourData = Object.keys(data).reduce((previous, current) => {
+      const houseFour = Object.keys(data).reduce((previous, current) => {
 	if( data[current].house.hasOwnProperty("four") ) {
 	previous.labels = data.James.house.four.overall.data.map(point => point.t ? point.t : 0)
 	previous.datasets.push({
@@ -298,8 +298,6 @@ class MahjongPage extends Component {
 	return previous
       }, {datasets:[], labels: []})
 
-
-      this.setState({threeData, fourData, dataOptions: newOptions, status: "Created house datasets..."})
 
 
       this.setState({ status: "Loading Tenhou data..." });
@@ -383,29 +381,59 @@ class MahjongPage extends Component {
 	      } else {
 		console.log(`Error in parsing tenhou for ${alias}`)
 	      }
-
-
 	    }
 	  })
 	}
       })
 
+      let tenhouFour = {
+	datasets: [],
+	labels: data.James.house.four.overall.data.map(point => point.t : 0)
+      }
+
+      for (var player in data) {
+	for (var alias in data[player]) {
+	  if( alias !== "house") {
+	    console.log(data[player][alias])
+	    if(data[player][alias].hasOwnProperty("four")) {
+	      console.log("This ran")
+	    tenhouFour.datasets.push({
+                label: `${player} as ${alias}`,
+                data: data[player][alias].four.overall.data,
+                fill: false, 
+                lineTension: 0.1,
+                borderCapStyle: 'butt',
+                borderDash: [],
+                borderDashOffset: 0.0,
+                borderJoinStyle: 'miter',
+                pointBorderWidth: 1,
+                pointRadius: 1,
+                hoverRadius: 1
+	    })
+	    }
+	  }
+	}
+      }
+
+      console.log(tenhouFour)
+
+      this.setState({houseThree, houseFour, tenhouFour, dataOptions: newOptions, status: "Created house datasets..."})
 
       this.setState({ status: "Done loading Tenhou" });
       console.log(data)
     })
-
   }
 
   render() {
-    if (this.state && this.state.threeData) {
+    if (this.state && this.state.houseThree) {
       return (
         <Layout location={this.props.location}>
           <Helmet title={`Mahjong | ${config.siteTitle}`} />
           <div>{this.state.status}</div>
           <div>{this.state.error? this.state.error : "No errors!"}</div>
-          <Line options={this.state.dataOptions} data={this.state.threeData} />
-          <Line options={this.state.dataOptions} data={this.state.fourData} />
+          <Line options={this.state.dataOptions} data={this.state.houseThree} />
+          <Line options={this.state.dataOptions} data={this.state.houseFour} />
+          <Line options={this.state.dataOptions} data={this.state.tenhouFour} />
         </Layout>
       );
     }
