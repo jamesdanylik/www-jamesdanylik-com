@@ -32,12 +32,12 @@ class MahjongPage extends Component {
     };
 
     const getTenhouUsers = () => {
-      const users = []
-      for(const houseName in data.players) {
+      let users = []
+      for (const houseName in data.players) {
 	const playerCopy = Object.assign({}, data.players[houseName])
 	delete playerCopy.house
 	const aliases = Object.keys(playerCopy)
-	users.concat(aliases)
+	users = users.concat(aliases)
       }
       return users
     }
@@ -67,7 +67,6 @@ class MahjongPage extends Component {
           word = "four";
         }
       } else if (Object.isObject(game)) {
-        // get all our aliases from the game here
         date = new Date(game.starttime * 1000);
         aliases = getTenhouUsers();
         if (game.playernum === "4") {
@@ -188,16 +187,28 @@ class MahjongPage extends Component {
             }
           });
 	}); // close csv foreach
-	this.setState({status: "Csv done"})
-        return table;
+	data.table = table;
+	return getTenhouUsers()
       })
-      .then(table => Promise.all([table]))
+      .then( aliases =>  {
+	console.log(aliases)
+	this.setState({status: "Fetching Tenhou results"})
+	return Promise.all(aliases.map(async (alias) => fetch(`https://proxy.danylik.com/nodocchi/api/listuser.php?name=${alias}`)))
+      })
+      .then( responses => {
+	console.log(responses)
+	return Promise.all(responses.map(async (response) => response.json()))
+      })
+      .then( responses => {
+	console.log(responses)
+	return [data.table]
+      })
       .then(([table]) => {
           table.forEach(game => {
             processGame(game);
           });
-
-        console.log(data);
+	this.setState({status: "Done"})
+	console.log(data);
       });
   }
 
@@ -208,21 +219,6 @@ class MahjongPage extends Component {
   updateWindowDimensions() {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
-
-  // fetch google sheet
-  // parse, if success feed to next stage
-  //
-  // preprocess google sheet into tables and get players
-  // if successful, feed to next stage
-  //
-  // process house games from previous
-  //
-  // check for tenhou usernames and fetch
-  //   wait for all to complete, then feed to next stage
-  //
-  // process tenhou games from previous
-  //
-  // done
 
   async fetchSheetScores() {
     const data = {};
