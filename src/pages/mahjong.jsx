@@ -122,8 +122,7 @@ class MahjongPage extends Component {
       .then(txt => parse(txt))
       .then(csv => {
 	this.setState({status: "Starting csv"})
-        const table3Man = [];
-        const table4Man = [];
+        const table = []
 
         console.log(csv);
 
@@ -150,15 +149,13 @@ class MahjongPage extends Component {
               game: game4Man,
               num: 4,
               word: "four",
-              table: table4Man
             },
             {
               game: game3Man,
               num: 3,
               word: "three",
-              table: table3Man
             }
-          ].forEach(({ game, num, word, table }) => {
+          ].forEach(({ game, num, word }) => {
             if (game[0] !== "" && game[0] !== "Time") {
               game.slice(1, 1 + num).forEach(player => {
                 const skeleton = { overall: {}, seasons: [] };
@@ -183,16 +180,13 @@ class MahjongPage extends Component {
           });
 	}); // close csv foreach
 	this.setState({status: "Csv done"})
-        return [table4Man, table3Man];
+        return table;
       })
-      .then(([table4Man, table3Man]) => Promise.all([table4Man, table3Man]))
-      .then(([table4Man, table3Man]) => {
-	[table4Man, table3Man].forEach(table => {
-	  this.setState({status: `Done with ${table.length}`})
+      .then(table => Promise.all([table]))
+      .then(([table]) => {
           table.forEach(game => {
             processGame(game);
           });
-        });
 
         console.log(data);
       });
