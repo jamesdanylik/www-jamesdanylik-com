@@ -29,8 +29,18 @@ class MahjongPage extends Component {
 
     const data = {
       players: {},
-      tenhouUsers: []
     };
+
+    const getTenhouUsers = () => {
+      const users = []
+      for(const houseName in data.players) {
+	const playerCopy = Object.assign({}, data.players[houseName])
+	delete playerCopy.house
+	const aliases = Object.keys(playerCopy)
+	users.concat(aliases)
+      }
+      return users
+    }
 
     const getHouseName = tenhouName => {
       for (const houseName in data.players) {
@@ -59,7 +69,7 @@ class MahjongPage extends Component {
       } else if (Object.isObject(game)) {
         // get all our aliases from the game here
         date = new Date(game.starttime * 1000);
-        aliases = data.tenhouUsers;
+        aliases = getTenhouUsers();
         if (game.playernum === "4") {
           num = 4;
           word = "four";
@@ -141,7 +151,6 @@ class MahjongPage extends Component {
                 [pTenhouName]: {}
               };
             }
-            data.tenhouUsers.push(pTenhouName);
           }
 
           [
