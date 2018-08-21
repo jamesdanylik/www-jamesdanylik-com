@@ -15,10 +15,36 @@ class MahjongPage extends Component {
     super(props);
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     console.log("constructor");
+
+    const buttons = (
+      <div>
+        <div>
+          {["house", "tenhou"].map(room => (<button key={room} onClick={() => {this.changeRoom(room)}}>{room}</button>))}
+        </div>
+        <div>
+          {["four", "three"].map(type =>(<button key={type} onClick={() => {this.changeType(type)}}>{type}</button>))}
+        </div>
+      </div>
+    )
+
+    this.state = {
+      activeRoom: "house",
+      types: ["three", "four"],
+      buttons
+    }
   }
 
   componentWillMount() {
     console.log("componentWillMount");
+  }
+
+  changeRoom(room) {
+    console.log(`Change room: ${room}`)
+    this.setState({activeRoom: room, test: new Date()})
+  }
+
+  changeType(type) {
+    this.setState({activeType: type, test: new Date()})
   }
 
   componentDidMount() {
@@ -238,16 +264,58 @@ class MahjongPage extends Component {
 	  return 0
 	})
 
-	console.log(collected)
 	return data.table.concat(collected)
       })
       .then((table) => {
 	this.setState({status: "Starting game processing..."})
         table.forEach(game => {
           processGame(game);
-        });
-	this.setState({status: "Done"})
-	console.log(data);
+	});
+
+	delete  data.table
+
+	data.graphs = {}
+	const rooms = ["house", "tenhou"]
+	const gameTypes = [{word: "three", num: 3}, {word: "four", num: 4}]
+
+	rooms.forEach(room => {
+	  data.graphs[room] = {}
+	  gameTypes.forEach(({word, num}) => {
+	    data.graphs[room][word] = {
+	      labels: data.players.James.house.three.overall.data.map(point => (point.t ? point.t : 0)),
+	      datasets: []
+	    }
+
+	    Object.keys(data.players).forEach(player => {
+	      if( room === "tenhou") {
+		const aliasCopy = Object.keys(data.players[player])
+		delete aliasCopy.house
+
+		aliasCopy.forEach(alias => {
+		  if(data.players[player][alias][word] && data.players[player][alias][word].overall.data && (alias !== "house")) {
+		    data.graphs[room][word].datasets.push({
+		      label: `${player} (${alias})`,
+		      data: data.players[player][alias][word].overall.data,
+		      fill: false,
+		      lineTension: 0.1
+		    })
+		  }
+		})
+	      } else if ( room === "house") {
+		if ( data.players[player][room][word] && data.players[player][room][word].overall.data ) {
+		  data.graphs[room][word].datasets.push({
+		    label: player,
+		    data: data.players[player][room][word].overall.data,
+		    fill: false,
+		    lineTension: 0.1,
+		  })
+		}
+	      }
+	    })
+	  })
+	})
+
+	this.setState({status: "Done", data, activeRoom: "house", activeType: "three", test: new Date()})
       });
   }
 
@@ -259,14 +327,49 @@ class MahjongPage extends Component {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
 
+
   render() {
     const status =
       this.state && this.state.status ? this.state.status : "Initializing...";
-    const cOptions =
-      this.state && this.state.dataOptions ? this.state.dataOptions : "";
+    const cOptions = {
+        hover: {
+          mode: "x"
+        },
+        tooltips: {
+          mode: "x"
+	},
+	animation: false,
+        scales: {
+          xAxes: [
+            {
+              title: "time",
+              type: "time",
+              time: {
+                unit: "month",
+                unitStepSize: 1,
+                displayFormats: {
+                  millisecond: "MMM YY",
+                  second: "MMM YY",
+                  minute: "MMM YY",
+                  hour: "MMM YY",
+                  day: "MMM YY",
+                  week: "MMM YY",
+                  month: "MMM YY",
+                  quarter: "MMM YY",
+                  year: "MMM YY"
+                }
+              }
+            }
+          ]
+        }
+    }
+
+    
+
+
     const c1 =
-      this.state && this.state.houseThree ? (
-        <Line options={cOptions} data={this.state.houseThree} />
+      this.state && this.state.data ? (
+        <Line key={this.state.test} options={cOptions} data={this.state.data.graphs[this.state.activeRoom][this.state.activeType]} />
       ) : (
         ""
       );
@@ -276,6 +379,7 @@ class MahjongPage extends Component {
         <Helmet title={`Mahjong | ${config.siteTitle}`} />
         <div>{status}</div>
         {c1}
+        {this.state && this.state.data ? this.state.buttons : ""}
       </Layout>
     );
   }
