@@ -6,6 +6,8 @@ import PostListing from "../components/PostListing/PostListing";
 import SEO from "../components/SEO/SEO";
 import config from "../../data/SiteConfig";
 
+import Link from "gatsby-link";
+
 import Steam from "../components/Steam/Steam";
 import ProjectTracker from "../components/ProjectTracker/ProjectTracker";
 import Goodreads from "../components/Goodreads/Goodreads";
@@ -31,6 +33,23 @@ class Index extends React.Component {
           <SEO />
           <h1>Warning!</h1>
           <h2>Under HEAVY Construction</h2>
+
+          <div>
+            <b>NEW (08/22/18)</b> -- Check the progress of{" "}
+            <Link to="/mahjong/">
+              the house mahjong calculator, React version!
+            </Link>{" "}
+            Originally a python script, now it runs in anybody{"'"}s browser on
+            demand! Or check out{" "}
+            <a
+              href={`https://github.com/jamesdanylik/www-jamesdanylik-com/blob/${buildCommit}/src/pages/mahjong.jsx`}
+            >
+              the source code here on Github
+            </a>!
+          </div>
+
+          <br />
+
           <div>
             Currently in the process of porting the site to GatsbyJS v2; getting
             source plugins moved over and tested takes prioirty over aesthetics

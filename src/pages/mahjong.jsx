@@ -19,19 +19,37 @@ class MahjongPage extends Component {
     const buttons = (
       <div>
         <div>
-          {["house", "tenhou"].map(room => (<button key={room} onClick={() => {this.changeRoom(room)}}>{room}</button>))}
+          {["house", "tenhou"].map(room => (
+            <button
+              key={room}
+              onClick={() => {
+                this.changeRoom(room);
+              }}
+            >
+              {room}
+            </button>
+          ))}
         </div>
         <div>
-          {["four", "three"].map(type =>(<button key={type} onClick={() => {this.changeType(type)}}>{type}</button>))}
+          {["four", "three"].map(type => (
+            <button
+              key={type}
+              onClick={() => {
+                this.changeType(type);
+              }}
+            >
+              {type}
+            </button>
+          ))}
         </div>
       </div>
-    )
+    );
 
     this.state = {
       activeRoom: "house",
       types: ["three", "four"],
       buttons
-    }
+    };
   }
 
   componentWillMount() {
@@ -39,12 +57,12 @@ class MahjongPage extends Component {
   }
 
   changeRoom(room) {
-    console.log(`Change room: ${room}`)
-    this.setState({activeRoom: room, test: new Date()})
+    console.log(`Change room: ${room}`);
+    this.setState({ activeRoom: room, test: new Date() });
   }
 
   changeType(type) {
-    this.setState({activeType: type, test: new Date()})
+    this.setState({ activeType: type, test: new Date() });
   }
 
   componentDidMount() {
@@ -52,30 +70,29 @@ class MahjongPage extends Component {
     window.addEventListener("resize", this.updateWindowDimensions);
     console.log("componentDidMount");
 
-
     const data = {
-      players: {},
+      players: {}
     };
 
     const getTenhouUsers = () => {
-      let users = []
+      let users = [];
       for (const houseName in data.players) {
-	const playerCopy = Object.assign({}, data.players[houseName])
-	delete playerCopy.house
-	const aliases = Object.keys(playerCopy)
-	users = users.concat(aliases)
+        const playerCopy = Object.assign({}, data.players[houseName]);
+        delete playerCopy.house;
+        const aliases = Object.keys(playerCopy);
+        users = users.concat(aliases);
       }
-      return users
+      return users;
     };
 
     const isHouseAlias = unknownAlias => {
-      for( const houseName in data.players) {
-	if(data.players[houseName][unknownAlias]) {
-	  return true
-	}
+      for (const houseName in data.players) {
+        if (data.players[houseName][unknownAlias]) {
+          return true;
+        }
       }
-      return false
-    }
+      return false;
+    };
 
     const getHouseName = tenhouName => {
       for (const houseName in data.players) {
@@ -165,8 +182,8 @@ class MahjongPage extends Component {
       .then(resp => resp.text())
       .then(txt => parse(txt))
       .then(csv => {
-	this.setState({status: "Starting csv"})
-        const table = []
+        this.setState({ status: "Starting csv" });
+        const table = [];
 
         csv.forEach(row => {
           const [pHouseName, pTenhouName] = row.slice(-2);
@@ -189,12 +206,12 @@ class MahjongPage extends Component {
             {
               game: game4Man,
               num: 4,
-              word: "four",
+              word: "four"
             },
             {
               game: game3Man,
               num: 3,
-              word: "three",
+              word: "three"
             }
           ].forEach(({ game, num, word }) => {
             if (game[0] !== "" && game[0] !== "Time") {
@@ -219,103 +236,127 @@ class MahjongPage extends Component {
               table.push(game);
             }
           });
-	}); // close csv foreach
-	data.table = table;
-	this.setState({status: "Starting tenhou fetch..."})
-	return getTenhouUsers();
+        }); // close csv foreach
+        data.table = table;
+        this.setState({ status: "Starting tenhou fetch..." });
+        return getTenhouUsers();
       })
-      .then( aliases => Promise.all(aliases.map(async (alias) => 
-	fetch(`https://proxy.danylik.com/nodocchi/api/listuser.php?name=${alias}`)
-      )))
-      .then( responses => Promise.all(responses.map(async (response) => response.json())))
-      .then( responses => {
-	let collected = []
-	responses.forEach(response => {
-	  collected = collected.concat(response.list)
-	})
+      .then(aliases =>
+        Promise.all(
+          aliases.map(async alias =>
+            fetch(
+              `https://proxy.danylik.com/nodocchi/api/listuser.php?name=${alias}`
+            )
+          )
+        )
+      )
+      .then(responses =>
+        Promise.all(responses.map(async response => response.json()))
+      )
+      .then(responses => {
+        let collected = [];
+        responses.forEach(response => {
+          collected = collected.concat(response.list);
+        });
 
-	// uniqueify
-	collected = Array.from(new Set(collected))
+        // uniqueify
+        collected = Array.from(new Set(collected));
 
-	// sort & preprocess
-	collected.sort((a, b) => {
-	  const keyA = new Date(a.starttime * 1000);
-	  const keyB = new Date(b.starttime * 1000);
+        // sort & preprocess
+        collected.sort((a, b) => {
+          const keyA = new Date(a.starttime * 1000);
+          const keyB = new Date(b.starttime * 1000);
 
-	  [a, b].forEach(game => {
-	    const num = Number(game.playernum)
-	    const word = num === 4 ? "four" : "three"
+          [a, b].forEach(game => {
+            const num = Number(game.playernum);
+            const word = num === 4 ? "four" : "three";
 
-	    for(let i = 0; i < num; i += 1) {
-	      const alias = game[`player${i+1}`]
-	      if(isHouseAlias(alias)) { // is tenhou player
-		const player = getHouseName(alias)
+            for (let i = 0; i < num; i += 1) {
+              const alias = game[`player${i + 1}`];
+              if (isHouseAlias(alias)) {
+                // is tenhou player
+                const player = getHouseName(alias);
 
-		data.players[player][alias][word] = {
-		  overall: {},
-		  seasons: []
-		}
-	      }
-	    }
-	  })
+                data.players[player][alias][word] = {
+                  overall: {},
+                  seasons: []
+                };
+              }
+            }
+          });
 
-	  if(keyA > keyB) return 1
-	  if(keyA < keyB) return -1
-	  return 0
-	})
+          if (keyA > keyB) return 1;
+          if (keyA < keyB) return -1;
+          return 0;
+        });
 
-	return data.table.concat(collected)
+        return data.table.concat(collected);
       })
-      .then((table) => {
-	this.setState({status: "Starting game processing..."})
+      .then(table => {
+        this.setState({ status: "Starting game processing..." });
         table.forEach(game => {
           processGame(game);
-	});
+        });
 
-	delete  data.table
+        delete data.table;
 
-	data.graphs = {}
-	const rooms = ["house", "tenhou"]
-	const gameTypes = [{word: "three", num: 3}, {word: "four", num: 4}]
+        data.graphs = {};
+        const rooms = ["house", "tenhou"];
+        const gameTypes = [{ word: "three", num: 3 }, { word: "four", num: 4 }];
 
-	rooms.forEach(room => {
-	  data.graphs[room] = {}
-	  gameTypes.forEach(({word, num}) => {
-	    data.graphs[room][word] = {
-	      labels: data.players.James.house.three.overall.data.map(point => (point.t ? point.t : 0)),
-	      datasets: []
-	    }
+        rooms.forEach(room => {
+          data.graphs[room] = {};
+          gameTypes.forEach(({ word, num }) => {
+            data.graphs[room][word] = {
+              labels: data.players.James.house.three.overall.data.map(
+                point => (point.t ? point.t : 0)
+              ),
+              datasets: []
+            };
 
-	    Object.keys(data.players).forEach(player => {
-	      if( room === "tenhou") {
-		const aliasCopy = Object.keys(data.players[player])
-		delete aliasCopy.house
+            Object.keys(data.players).forEach(player => {
+              if (room === "tenhou") {
+                const aliasCopy = Object.keys(data.players[player]);
+                delete aliasCopy.house;
 
-		aliasCopy.forEach(alias => {
-		  if(data.players[player][alias][word] && data.players[player][alias][word].overall.data && (alias !== "house")) {
-		    data.graphs[room][word].datasets.push({
-		      label: `${player} (${alias})`,
-		      data: data.players[player][alias][word].overall.data,
-		      fill: false,
-		      lineTension: 0.1
-		    })
-		  }
-		})
-	      } else if ( room === "house") {
-		if ( data.players[player][room][word] && data.players[player][room][word].overall.data ) {
-		  data.graphs[room][word].datasets.push({
-		    label: player,
-		    data: data.players[player][room][word].overall.data,
-		    fill: false,
-		    lineTension: 0.1,
-		  })
-		}
-	      }
-	    })
-	  })
-	})
+                aliasCopy.forEach(alias => {
+                  if (
+                    data.players[player][alias][word] &&
+                    data.players[player][alias][word].overall.data &&
+                    alias !== "house"
+                  ) {
+                    data.graphs[room][word].datasets.push({
+                      label: `${player} (${alias})`,
+                      data: data.players[player][alias][word].overall.data,
+                      fill: false,
+                      lineTension: 0.1
+                    });
+                  }
+                });
+              } else if (room === "house") {
+                if (
+                  data.players[player][room][word] &&
+                  data.players[player][room][word].overall.data
+                ) {
+                  data.graphs[room][word].datasets.push({
+                    label: player,
+                    data: data.players[player][room][word].overall.data,
+                    fill: false,
+                    lineTension: 0.1
+                  });
+                }
+              }
+            });
+          });
+        });
 
-	this.setState({status: "Done", data, activeRoom: "house", activeType: "three", test: new Date()})
+        this.setState({
+          status: "Done",
+          data,
+          activeRoom: "house",
+          activeType: "three",
+          test: new Date()
+        });
       });
   }
 
@@ -327,49 +368,53 @@ class MahjongPage extends Component {
     this.setState({ width: window.innerWidth, height: window.innerHeight });
   }
 
-
   render() {
     const status =
-      this.state && this.state.status ? this.state.status : "Initializing...";
+      this.state && this.state.status
+        ? this.state.data ? "" : this.state.status
+        : "Initializing...";
     const cOptions = {
-        hover: {
-          mode: "x"
-        },
-        tooltips: {
-          mode: "x"
-	},
-	animation: false,
-        scales: {
-          xAxes: [
-            {
-              title: "time",
-              type: "time",
-              time: {
-                unit: "month",
-                unitStepSize: 1,
-                displayFormats: {
-                  millisecond: "MMM YY",
-                  second: "MMM YY",
-                  minute: "MMM YY",
-                  hour: "MMM YY",
-                  day: "MMM YY",
-                  week: "MMM YY",
-                  month: "MMM YY",
-                  quarter: "MMM YY",
-                  year: "MMM YY"
-                }
+      hover: {
+        mode: "x"
+      },
+      tooltips: {
+        mode: "x"
+      },
+      animation: false,
+      scales: {
+        xAxes: [
+          {
+            title: "time",
+            type: "time",
+            time: {
+              unit: "month",
+              unitStepSize: 1,
+              displayFormats: {
+                millisecond: "MMM YY",
+                second: "MMM YY",
+                minute: "MMM YY",
+                hour: "MMM YY",
+                day: "MMM YY",
+                week: "MMM YY",
+                month: "MMM YY",
+                quarter: "MMM YY",
+                year: "MMM YY"
               }
             }
-          ]
-        }
-    }
-
-    
-
+          }
+        ]
+      }
+    };
 
     const c1 =
       this.state && this.state.data ? (
-        <Line key={this.state.test} options={cOptions} data={this.state.data.graphs[this.state.activeRoom][this.state.activeType]} />
+        <Line
+          key={this.state.test}
+          options={cOptions}
+          data={
+            this.state.data.graphs[this.state.activeRoom][this.state.activeType]
+          }
+        />
       ) : (
         ""
       );
@@ -378,6 +423,16 @@ class MahjongPage extends Component {
       <Layout location={this.props.location}>
         <Helmet title={`Mahjong | ${config.siteTitle}`} />
         <div>{status}</div>
+        {this.state && this.state.data ? (
+          <div>
+            <a href="/">Back to home</a>
+            <h1>
+              {this.state.activeRoom} {this.state.activeType}
+            </h1>
+          </div>
+        ) : (
+          ""
+        )}
         {c1}
         {this.state && this.state.data ? this.state.buttons : ""}
       </Layout>
