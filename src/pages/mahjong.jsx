@@ -246,9 +246,6 @@ const seasons = []
         this.setState({ status: "Starting csv" });
         const table = [];
 
-	
-
-	console.log(seasons)
 
 	// For each row, split into component tables
 	// Build lexicon of which players exist in which rooms
@@ -348,7 +345,7 @@ const seasons = []
 
                 data.players[player][alias][word] = {
                   overall: {},
-                  seasons: []
+                  seasons: JSON.parse(JSON.stringify(seasons))
                 };
               }
             }
