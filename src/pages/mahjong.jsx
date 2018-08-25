@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { Line } from "react-chartjs-2";
+import Dropdown from "react-dropdown"
+
 
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
@@ -65,16 +67,19 @@ class MahjongPage extends Component {
     this.setState({ activeType: type, test: new Date() });
   }
 
-  componentDidMount() {
-    this.updateWindowDimensions();
-    window.addEventListener("resize", this.updateWindowDimensions);
-    console.log("componentDidMount");
+  _onSelectRoom(option) {
+    this.setState({activeRoom: option})
+  }
 
+  _onSelectType(option) {
+    this.setState({activeType: option})
+  }
 
-    // This is the main data object
-    const data = {
-      players: {},
-    };
+  _onSelectSeason(option) {
+    this.setState({activeSeason: option})
+  }
+
+  getSeasons() {
 const seasons = []
 	let start = new Date(Date.parse("01/01/17"))
 	let end = new Date(Date.parse("03/01/17"))
@@ -90,6 +95,71 @@ const seasons = []
 	  start = end
 	  end = new Date(start.setMonth(start.getMonth() + 3))
 	}
+    return seasons
+  }
+
+  createGraphDataset() {
+    const graphData = {
+      labels: this.state.data.players.James.house.three.overall.data.map(p => (p.t ? p.t : 0)),
+      datasets: []
+    }
+
+    const rooms = this.state.activeRoom !== "all" ? [this.state.activeRoom] : ["house", "tenhou"]
+    const types = this.state.activeType !== "all" ? [this.state.activeType] : ["four", "three"]
+
+
+    Object.keys(this.state.data.players).forEach(player => {
+      const aliasCopy = Object.keys(this.state.data.players[player])
+
+      console.log(`processing ${player}`)
+      if(this.state.activeRoom === "house") {
+	for(const a in aliasCopy) {
+	  if(aliasCopy[a] !== "house") {
+	    delete aliasCopy[a]
+	  }
+	}
+      } else if (this.state.activeRoom === "tenhou") {
+	delete aliasCopy.house
+      } else {
+	console.log("All")
+      }
+      
+      aliasCopy.forEach(alias => {
+	types.forEach(type => {
+	
+	if(this.state.data.players[player][alias][type]) {
+	if(this.state.data.players[player][alias][type] &&
+	   this.state.data.players[player][alias][type].overall.data) {
+	  graphData.datasets.push({
+	    label: `${player} (${alias})`,
+	    data: this.state.data.players[player][alias][type].overall.data,
+	    fill: false,
+	    lineTension: 0.1
+	  })
+	}
+	}
+	})
+      })
+
+    })
+    console.log(graphData)
+
+    this.setState({graphData})
+  }
+
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener("resize", this.updateWindowDimensions);
+    console.log("componentDidMount");
+
+
+    // This is the main data object
+    const data = {
+      players: {},
+    };
+
+    const seasons = this.getSeasons()
+
     // Helper function to return all the tenhou usernames we know about
     const getTenhouUsers = () => {
       let users = [];
@@ -424,11 +494,14 @@ const seasons = []
         this.setState({
           status: "Done",
           data,
-          activeRoom: "house",
-          activeType: "three",
+          activeRoom: "all",
+          activeType: "all",
           test: new Date()
-        });
-      });
+	});
+      })
+      .then(() => {
+	this.createGraphDataset()
+      })
   }
 
   componentWillUnmount() {
@@ -451,7 +524,6 @@ const seasons = []
       tooltips: {
         mode: "x"
       },
-      animation: false,
       scales: {
         xAxes: [
           {
@@ -478,12 +550,12 @@ const seasons = []
     };
 
     const c1 =
-      this.state && this.state.data ? (
+      this.state && this.state.graphData ? (
         <Line
           key={this.state.test}
           options={cOptions}
           data={
-            this.state.data.graphs[this.state.activeRoom][this.state.activeType]
+            this.state.graphData
           }
         />
       ) : (
@@ -500,6 +572,9 @@ const seasons = []
             <h1>
               {this.state.activeRoom} {this.state.activeType}
             </h1>
+            <Dropdown options={this.getSeasons().map(s => s.start)} />
+            <Dropdown options={["house", "three"]} value="house" />
+            <Dropdown options={["three", "four"]} value="three" />
           </div>
         ) : (
           ""
