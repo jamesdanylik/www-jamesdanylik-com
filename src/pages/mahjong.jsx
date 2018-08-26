@@ -21,6 +21,7 @@ class MahjongPage extends Component {
     this.state = {
       activeRoom: "all",
       activeType: "all",
+      activeSeason: "overall"
     };
   }
 
@@ -49,8 +50,8 @@ class MahjongPage extends Component {
     return seasons;
   }
 
-  createGraphDataset(activeRoom, activeType) {
-    console.log(`${activeRoom} ${activeType}`)
+  createGraphDataset(activeSeason, activeRoom, activeType) {
+    console.log(`${activeSeason} ${activeRoom} ${activeType}`)
     const graphData = {
       labels: this.state.data.players.James.house.three.overall.data.map(
         p => (p.t ? p.t : 0)
@@ -67,6 +68,9 @@ class MahjongPage extends Component {
         ? [activeType]
         : ["four", "three"];
 
+
+    const seasons = activeSeason
+
     Object.keys(this.state.data.players).forEach(player => {
       const aliasCopy = Object.keys(this.state.data.players[player]);
 
@@ -82,7 +86,8 @@ class MahjongPage extends Component {
       }
 
       aliasCopy.forEach(alias => {
-        types.forEach(type => {
+	types.forEach(type => {
+	  if(seasons === "overall") {
           if (this.state.data.players[player][alias][type]) {
             if (
               this.state.data.players[player][alias][type] &&
@@ -98,26 +103,37 @@ class MahjongPage extends Component {
                 lineTension: 0.1
 	      });
             }
-          }
+	  }
+	  }
         });
       });
     });
     console.log(graphData);
 
+    const seasonOptions = this.getSeasons().map((s, i) => `Season ${i+1}: ${s.start.toLocaleString()} - ${s.end.toLocaleString()}`)
+    seasonOptions.push("all")
+    seasonOptions.push("overall")
     const dropdowns = (
       <div>
+        <Dropdown
+          options={seasonOptions}
+          value="overall"
+          onChange={(option) => {
+	    this.createGraphDataset(option.value, activeRoom, activeType)
+	  }}
+        />
         <Dropdown
           options={["house", "tenhou", "all"]}
           value={activeRoom}
           onChange={(option) => {
-	  this.createGraphDataset(option.value, activeType)
+	  this.createGraphDataset(activeSeason, option.value, activeType)
 	}}
         />
         <Dropdown
           options={["three", "four", "all"]}
           value={activeType}
           onChange={(option) => {
-	  this.createGraphDataset(activeRoom, option.value)
+	  this.createGraphDataset(activeSeason, activeRoom, option.value)
 	}}
         /> 
       </div>
@@ -435,7 +451,7 @@ class MahjongPage extends Component {
         });
       })
       .then(() => {
-        this.createGraphDataset(this.state.activeRoom, this.state.activeType);
+        this.createGraphDataset(this.state.activeSeason, this.state.activeRoom, this.state.activeType);
       });
   }
 
@@ -459,7 +475,6 @@ class MahjongPage extends Component {
       tooltips: {
         mode: "x"
       },
-      animation: false,
       scales: {
         xAxes: [
           {
@@ -504,7 +519,7 @@ class MahjongPage extends Component {
           <div>
             <a href="/">Back to home</a>
             <h1>
-              {this.state.activeRoom} {this.state.activeType}
+              {this.state.activeSeason} {this.state.activeRoom} {this.state.activeType}
             </h1>
             {this.state.dropdowns}
           </div>
