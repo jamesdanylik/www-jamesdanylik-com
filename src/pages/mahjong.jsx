@@ -59,17 +59,15 @@ class MahjongPage extends Component {
       datasets: []
     };
 
-    const rooms =
-      activeRoom !== "all"
-        ? [activeRoom]
-        : ["house", "tenhou"];
     const types =
       activeType !== "all"
         ? [activeType]
         : ["four", "three"];
 
 
-    const seasons = activeSeason
+    const seasons = activeSeason === "overall" ? activeSeason : (activeSeason === "all" ? [] : [Number(activeSeason.slice(7,8))-1])
+
+    console.log(seasons)
 
     Object.keys(this.state.data.players).forEach(player => {
       const aliasCopy = Object.keys(this.state.data.players[player]);
@@ -83,6 +81,7 @@ class MahjongPage extends Component {
       } else if (activeRoom === "tenhou") {
         delete aliasCopy.house;
       } else {
+	// all; process whole array
       }
 
       aliasCopy.forEach(alias => {
@@ -104,6 +103,25 @@ class MahjongPage extends Component {
 	      });
             }
 	  }
+	  } else {
+	    // Do season processing
+	    seasons.forEach(season => {
+	      if(this.state.data.players[player][alias][type]) {
+		if(this.state.data.players[player][alias][type] &&
+		  this.state.data.players[player][alias][type].seasons[season] &&
+		  this.state.data.players[player][alias][type].seasons[season].data &&
+		  this.state.data.players[player][alias][type].seasons[season].data.data && 
+		  this.state.data.players[player][alias][type].seasons[season].data.data.length > 0
+		) {
+		  graphData.datasets.push({
+		    label: `${player} (${alias})`,
+		    data: this.state.data.players[player][alias][type].seasons[season].data.data,
+		    fill: false,
+		    lineTension: 0.1
+		  })
+		}
+	      }
+	    })
 	  }
         });
       });
@@ -139,7 +157,7 @@ class MahjongPage extends Component {
       </div>
     )
 
-    this.setState({ graphData, dropdowns, test: new Date(), activeRoom, activeType });
+    this.setState({ graphData, dropdowns, test: new Date(), activeRoom, activeType, activeSeason });
   }
 
   componentDidMount() {
@@ -448,7 +466,8 @@ class MahjongPage extends Component {
           activeRoom: "all",
           activeType: "all",
           test: new Date()
-        });
+	});
+	console.log(data)
       })
       .then(() => {
         this.createGraphDataset(this.state.activeSeason, this.state.activeRoom, this.state.activeType);
