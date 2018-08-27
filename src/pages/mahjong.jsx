@@ -70,7 +70,7 @@ class MahjongPage extends Component {
 
     console.log(seasons)
 
-    const colors = palette('mpn65', 32)
+    const colors = palette('mpn65', 64)
     console.log(colors)
     let colorId = 0
 
@@ -105,14 +105,15 @@ class MahjongPage extends Component {
                 data: this.state.data.players[player][alias][type].overall.data,
                 fill: false,
 		lineTension: 0.1,
-		borderColor: `#${colors[colorId]}`
+		borderColor: `#${colors[colorId]}`,
+		backgroundColor: `#${colors[colorId]}`
 	      });
 	      colorId += 1
             }
 	  }
 	  } else {
 	    // Do season processing
-	    graphData.labels = this.state.data.players.James.house.four.seasons[seasons[0]].data.data.map(p => p.t? p.t : 0)
+	    graphData.labels = this.state.data.players.James.house.three.seasons[seasons[0]].data.data.map(p => p.t? p.t : 0)
 	    seasons.forEach(season => {
 	      if(this.state.data.players[player][alias][type]) {
 		if(this.state.data.players[player][alias][type] &&
@@ -129,7 +130,8 @@ class MahjongPage extends Component {
 		    data: this.state.data.players[player][alias][type].seasons[season].data.data,
 		    fill: false,
 		    lineTension: 0.1,
-		    borderColor: `#${colors[colorId]}`
+		    borderColor: `#${colors[colorId]}`,
+		    backgroundColor: `#${colors[colorId]}`
 		  })
 		  colorId += 1
 		}
