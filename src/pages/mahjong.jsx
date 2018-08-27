@@ -65,7 +65,7 @@ class MahjongPage extends Component {
         : ["four", "three"];
 
 
-    const seasons = activeSeason === "overall" ? activeSeason : (activeSeason === "all" ? [] : [Number(activeSeason.slice(7,8))-1])
+    const seasons = activeSeason === "overall" ? activeSeason : (activeSeason === "all" ? this.getSeasons().map((s, i) => i) : [Number(activeSeason.slice(7,8))-1])
 
     console.log(seasons)
 
