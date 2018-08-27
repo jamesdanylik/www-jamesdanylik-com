@@ -105,6 +105,7 @@ class MahjongPage extends Component {
 	  }
 	  } else {
 	    // Do season processing
+	    graphData.labels = this.state.data.players.James.house.four.seasons[seasons[0]].data.data.map(p => p.t? p.t : 0)
 	    seasons.forEach(season => {
 	      if(this.state.data.players[player][alias][type]) {
 		if(this.state.data.players[player][alias][type] &&
@@ -113,6 +114,9 @@ class MahjongPage extends Component {
 		  this.state.data.players[player][alias][type].seasons[season].data.data && 
 		  this.state.data.players[player][alias][type].seasons[season].data.data.length > 0
 		) {
+		  if(activeRoom === "tenhou" && alias === "house") {
+		    return
+		  }
 		  graphData.datasets.push({
 		    label: `${player} (${alias})`,
 		    data: this.state.data.players[player][alias][type].seasons[season].data.data,
@@ -304,11 +308,12 @@ class MahjongPage extends Component {
               data.players[player][alias][word].seasons[
                 seasonId
               ].data.count += 1;
-            } else {
+	    } else {
+	      const startDate = data.players[player][alias][word].seasons[seasonId].start
               data.players[player][alias][word].seasons[seasonId].data = {
                 data: [
                   {
-                    t: new Date(Date.parse("01-15-2017")),
+                    t: startDate,
                     y: 0
                   },
                   {
