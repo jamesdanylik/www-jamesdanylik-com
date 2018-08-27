@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { Line } from "react-chartjs-2";
 import Dropdown from "react-dropdown";
+import palette from "google-palette"
 
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
@@ -69,6 +70,10 @@ class MahjongPage extends Component {
 
     console.log(seasons)
 
+    const colors = palette('mpn65', 32)
+    console.log(colors)
+    let colorId = 0
+
     Object.keys(this.state.data.players).forEach(player => {
       const aliasCopy = Object.keys(this.state.data.players[player]);
 
@@ -99,8 +104,10 @@ class MahjongPage extends Component {
                 label: `${player} (${alias})`,
                 data: this.state.data.players[player][alias][type].overall.data,
                 fill: false,
-                lineTension: 0.1
+		lineTension: 0.1,
+		borderColor: `#${colors[colorId]}`
 	      });
+	      colorId += 1
             }
 	  }
 	  } else {
@@ -121,8 +128,10 @@ class MahjongPage extends Component {
 		    label: `${player} (${alias})`,
 		    data: this.state.data.players[player][alias][type].seasons[season].data.data,
 		    fill: false,
-		    lineTension: 0.1
+		    lineTension: 0.1,
+		    borderColor: `#${colors[colorId]}`
 		  })
+		  colorId += 1
 		}
 	      }
 	    })

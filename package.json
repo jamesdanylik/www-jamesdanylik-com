@@ -34,6 +34,7 @@
     "gatsby-source-steam": "^0.1.0",
     "gatsby-transformer-remark": "next",
     "gatsby-transformer-sharp": "next",
+    "google-palette": "^1.1.0",
     "isomorphic-fetch": "^2.2.1",
     "lodash": "^4.17.4",
     "moment": "^2.22.2",
