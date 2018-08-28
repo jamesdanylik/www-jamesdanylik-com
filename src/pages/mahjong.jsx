@@ -440,7 +440,7 @@ class MahjongPage extends Component {
         }); // close csv foreach
         data.table = table;
         this.setState({ status: "Starting tenhou fetch..." });
-        return getTenhouUsers();
+        return [];
       })
       .then(aliases =>
         // STAGE 3: Fetch all tenhou results via proxy and wait for all to return
