@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Helmet from "react-helmet";
 import { Line } from "react-chartjs-2";
 import Dropdown from "react-dropdown";
-import palette from "google-palette"
+import palette from "google-palette";
 
 require("es6-promise").polyfill();
 require("isomorphic-fetch");
@@ -18,7 +18,6 @@ class MahjongPage extends Component {
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
     console.log("constructor");
 
- 
     this.state = {
       activeRoom: "all",
       activeType: "all",
@@ -29,8 +28,6 @@ class MahjongPage extends Component {
   componentWillMount() {
     console.log("componentWillMount");
   }
-
- 
 
   getSeasons() {
     const seasons = [];
@@ -52,7 +49,7 @@ class MahjongPage extends Component {
   }
 
   createGraphDataset(activeSeason, activeRoom, activeType) {
-    console.log(`${activeSeason} ${activeRoom} ${activeType}`)
+    console.log(`${activeSeason} ${activeRoom} ${activeType}`);
     const graphData = {
       labels: this.state.data.players.James.house.three.overall.data.map(
         p => (p.t ? p.t : 0)
@@ -60,19 +57,20 @@ class MahjongPage extends Component {
       datasets: []
     };
 
-    const types =
-      activeType !== "all"
-        ? [activeType]
-        : ["four", "three"];
+    const types = activeType !== "all" ? [activeType] : ["four", "three"];
 
+    const seasons =
+      activeSeason === "overall"
+        ? activeSeason
+        : activeSeason === "all"
+          ? this.getSeasons().map((s, i) => i)
+          : [Number(activeSeason.slice(7, 8)) - 1];
 
-    const seasons = activeSeason === "overall" ? activeSeason : (activeSeason === "all" ? this.getSeasons().map((s, i) => i) : [Number(activeSeason.slice(7,8))-1])
+    console.log(seasons);
 
-    console.log(seasons)
-
-    const colors = palette('mpn65', 64)
-    console.log(colors)
-    let colorId = 0
+    const colors = palette("mpn65", 64);
+    console.log(colors);
+    let colorId = 0;
 
     Object.keys(this.state.data.players).forEach(player => {
       const aliasCopy = Object.keys(this.state.data.players[player]);
@@ -86,78 +84,93 @@ class MahjongPage extends Component {
       } else if (activeRoom === "tenhou") {
         delete aliasCopy.house;
       } else {
-	// all; process whole array
+        // all; process whole array
       }
 
       aliasCopy.forEach(alias => {
-	types.forEach(type => {
-	  if(seasons === "overall") {
-          if (this.state.data.players[player][alias][type]) {
-            if (
-              this.state.data.players[player][alias][type] &&
-              this.state.data.players[player][alias][type].overall.data
-	    ) {
-	      if(activeRoom === "tenhou" && alias === "house") {
-		return
-	      }
-              graphData.datasets.push({
-                label: `${player} (${alias})`,
-                data: this.state.data.players[player][alias][type].overall.data,
-                fill: false,
-		lineTension: 0.1,
-		borderColor: `#${colors[colorId]}`,
-		backgroundColor: `#${colors[colorId]}`,
-		pointRadius: 2
-	      });
-	      colorId += 1
+        types.forEach(type => {
+          if (seasons === "overall") {
+            if (this.state.data.players[player][alias][type]) {
+              if (
+                this.state.data.players[player][alias][type] &&
+                this.state.data.players[player][alias][type].overall.data
+              ) {
+                if (activeRoom === "tenhou" && alias === "house") {
+                  return;
+                }
+                graphData.datasets.push({
+                  label: `${player} (${alias})`,
+                  data: this.state.data.players[player][alias][type].overall
+                    .data,
+                  fill: false,
+                  lineTension: 0.1,
+                  borderColor: `#${colors[colorId]}`,
+                  backgroundColor: `#${colors[colorId]}`,
+                  pointRadius: 2
+                });
+                colorId += 1;
+              }
             }
-	  }
-	  } else {
-	    // Do season processing
-	    graphData.labels = this.state.data.players.James.house.three.seasons[seasons[0]].data.data.map(p => p.t? p.t : 0)
-	    seasons.forEach(season => {
-	      if(this.state.data.players[player][alias][type]) {
-		if(this.state.data.players[player][alias][type] &&
-		  this.state.data.players[player][alias][type].seasons[season] &&
-		  this.state.data.players[player][alias][type].seasons[season].data &&
-		  this.state.data.players[player][alias][type].seasons[season].data.data && 
-		  this.state.data.players[player][alias][type].seasons[season].data.data.length > 0
-		) {
-		  if(activeRoom === "tenhou" && alias === "house") {
-		    return
-		  }
-		  graphData.datasets.push({
-		    label: `${player} (${alias})`,
-		    data: this.state.data.players[player][alias][type].seasons[season].data.data,
-		    fill: false,
-		    lineTension: 0.1,
-		    borderColor: `#${colors[colorId]}`,
-		    backgroundColor: `#${colors[colorId]}`,
-		    pointRadius: 2
-		  })
-		  colorId += 1
-		}
-	      }
-	    })
-	  }
+          } else {
+            // Do season processing
+            graphData.labels = this.state.data.players.James.house.three.seasons[
+              seasons[0]
+            ].data.data.map(p => (p.t ? p.t : 0));
+            seasons.forEach(season => {
+              if (this.state.data.players[player][alias][type]) {
+                if (
+                  this.state.data.players[player][alias][type] &&
+                  this.state.data.players[player][alias][type].seasons[
+                    season
+                  ] &&
+                  this.state.data.players[player][alias][type].seasons[season]
+                    .data &&
+                  this.state.data.players[player][alias][type].seasons[season]
+                    .data.data &&
+                  this.state.data.players[player][alias][type].seasons[season]
+                    .data.data.length > 0
+                ) {
+                  if (activeRoom === "tenhou" && alias === "house") {
+                    return;
+                  }
+                  graphData.datasets.push({
+                    label: `${player} (${alias})`,
+                    data: this.state.data.players[player][alias][type].seasons[
+                      season
+                    ].data.data,
+                    fill: false,
+                    lineTension: 0.1,
+                    borderColor: `#${colors[colorId]}`,
+                    backgroundColor: `#${colors[colorId]}`,
+                    pointRadius: 2
+                  });
+                  colorId += 1;
+                }
+              }
+            });
+          }
         });
       });
     });
     console.log(graphData);
 
-    const seasonOptions = this.getSeasons().map((s, i) => `Season ${i+1}: ${s.start.toLocaleDateString()} - ${s.end.toLocaleDateString()}`)
-    seasonOptions.push("all")
-    seasonOptions.push("overall")
+    const seasonOptions = this.getSeasons().map(
+      (s, i) =>
+        `Season ${i +
+          1}: ${s.start.toLocaleDateString()} - ${s.end.toLocaleDateString()}`
+    );
+    seasonOptions.push("all");
+    seasonOptions.push("overall");
 
     const dStyle = {
       float: "left",
       paddingLeft: "10px"
-    }
+    };
 
     const iStyle = {
       fontSize: "24px",
       fontWeight: "bold"
-    }
+    };
 
     const dropdowns = (
       <div>
@@ -167,9 +180,9 @@ class MahjongPage extends Component {
             <Dropdown
               options={seasonOptions}
               value={activeSeason}
-              onChange={(option) => {
-	    this.createGraphDataset(option.value, activeRoom, activeType)
-	  }}
+              onChange={option => {
+                this.createGraphDataset(option.value, activeRoom, activeType);
+              }}
             />
           </div>
         </div>
@@ -179,9 +192,9 @@ class MahjongPage extends Component {
             <Dropdown
               options={["house", "tenhou", "all"]}
               value={activeRoom}
-              onChange={(option) => {
-	  this.createGraphDataset(activeSeason, option.value, activeType)
-	}}
+              onChange={option => {
+                this.createGraphDataset(activeSeason, option.value, activeType);
+              }}
             />
           </div>
         </div>
@@ -191,16 +204,23 @@ class MahjongPage extends Component {
             <Dropdown
               options={["three", "four", "all"]}
               value={activeType}
-              onChange={(option) => {
-	  this.createGraphDataset(activeSeason, activeRoom, option.value)
-	}}
-            /> 
+              onChange={option => {
+                this.createGraphDataset(activeSeason, activeRoom, option.value);
+              }}
+            />
           </div>
         </div>
       </div>
-    )
+    );
 
-    this.setState({ graphData, dropdowns, test: new Date(), activeRoom, activeType, activeSeason });
+    this.setState({
+      graphData,
+      dropdowns,
+      test: new Date(),
+      activeRoom,
+      activeType,
+      activeSeason
+    });
   }
 
   componentDidMount() {
@@ -347,8 +367,9 @@ class MahjongPage extends Component {
               data.players[player][alias][word].seasons[
                 seasonId
               ].data.count += 1;
-	    } else {
-	      const startDate = data.players[player][alias][word].seasons[seasonId].start
+            } else {
+              const startDate =
+                data.players[player][alias][word].seasons[seasonId].start;
               data.players[player][alias][word].seasons[seasonId].data = {
                 data: [
                   {
@@ -510,11 +531,15 @@ class MahjongPage extends Component {
           activeRoom: "all",
           activeType: "all",
           test: new Date()
-	});
-	console.log(data)
+        });
+        console.log(data);
       })
       .then(() => {
-        this.createGraphDataset(this.state.activeSeason, this.state.activeRoom, this.state.activeType);
+        this.createGraphDataset(
+          this.state.activeSeason,
+          this.state.activeRoom,
+          this.state.activeType
+        );
       });
   }
 

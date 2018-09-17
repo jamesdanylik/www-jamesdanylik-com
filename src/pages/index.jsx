@@ -35,7 +35,36 @@ class Index extends React.Component {
           <h2>Under HEAVY Construction</h2>
 
           <div>
-            <b>NEW (08/22/18)</b> -- Check the progress of{" "}
+            <p>
+              <b>09/16/18</b> -- It turns out{" "}
+              <a href="http://nodocchi.moe">nodocchi.moe</a> isn{"'"}t
+              actually down; in fact, it looks like they just banned us in
+              particular -- guess they didn{"'"}t like us
+	      getting our <a href="http://tenhou.net">tenhou.net</a> data from them, even though they have an
+              export button... whoops! Consequently, tenhou graphing is down until
+              I find a new source for that data. Kinda strikes me as odd, but on the other hand I didn{"'"} really ask to
+              use it, so I guess they don{"'"}t really have to notify me when they block me, either!
+            </p>
+            <p>
+              I{"'"}m working on creating my own database, but that means
+	      translating the <a href="http://tenhou.net/sc/raw/">tenhou.net API documents</a>,
+              implementing a parser for game logs,
+              before collecting every game ever played on the service. Only then can I put up a quick API
+              endpoint somewhere, and get my graphs back. Since I{"'"}m now doing all that work anyway, I
+              figure I might as well go the extra mile and try to make something
+              usuable for people in the English community who want to do stuff
+              like this. It strikes me as terribly innefficent to just have
+              everyone redoing the same work over and over again, pounding the
+              tenhou servers with unneccasary work.
+            </p>
+            <p>
+	      I{"'"}m also increasingly liking these asides on the frontpage.  They're distinct from acticles in a nice way and serve to mark progress, but writing all this inline in the index page is silly.  Perhaps I can try putting these messagges as commit messages.  If I spend more time squashing down development commits, that could work.  
+            </p>
+          </div>
+
+          <br />
+          <div>
+            <b>08/22/18</b> -- Check the progress of{" "}
             <Link to="/mahjong/">
               the house mahjong calculator, React version!
             </Link>{" "}
