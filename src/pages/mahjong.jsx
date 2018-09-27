@@ -293,12 +293,12 @@ class MahjongPage extends Component {
           word = "four";
         }
       } else if (typeof game === "object") {
-        date = new Date(game.starttime * 1000);
+        date = Date.parse(game.starttime);
         aliases = getTenhouUsers();
-        if (game.playernum === "4") {
+        if (game.player4) {
           num = 4;
           word = "four";
-        } else if (game.playernum === "3") {
+        } else {
           num = 3;
           word = "three";
         }
@@ -313,7 +313,7 @@ class MahjongPage extends Component {
             score = Number(game[1 + num + i]);
           } else if (game[`player${i + 1}`] === alias) {
             player = getHouseName(alias);
-            score = Number(game[`player${i + 1}ptr`]);
+            score = Number(game[`player${i + 1}pts`]);
           } else {
             continue;
           }
@@ -461,14 +461,14 @@ class MahjongPage extends Component {
         }); // close csv foreach
         data.table = table;
         this.setState({ status: "Starting tenhou fetch..." });
-        return [];
+        return getTenhouUsers();
       })
       .then(aliases =>
         // STAGE 3: Fetch all tenhou results via proxy and wait for all to return
         Promise.all(
           aliases.map(async alias =>
             fetch(
-              `https://proxy.danylik.com/nodocchi/api/listuser.php?name=${alias}`
+              `https://tenhou.danylik.com/index.php?user=${alias}`
             )
           )
         )
@@ -477,22 +477,24 @@ class MahjongPage extends Component {
         Promise.all(responses.map(async response => response.json()))
       )
       .then(responses => {
-        // STAGE 4: First pass on tenhou data
-        let collected = [];
+	// STAGE 4: First pass on tenhou data
+	let collected = [];
+	console.log(responses);
         responses.forEach(response => {
-          collected = collected.concat(response.list);
+          collected = collected.concat(response);
         });
 
         // uniqueify
         collected = Array.from(new Set(collected));
 
+
         // sort & preprocess
         collected.sort((a, b) => {
-          const keyA = new Date(a.starttime * 1000);
-          const keyB = new Date(b.starttime * 1000);
-
-          [a, b].forEach(game => {
-            const num = Number(game.playernum);
+          const keyA = Date.parse(a.starttime);
+          const keyB = Date.parse(b.starttime);
+  
+	  [a, b].forEach(game => {
+	    const num = game.player4 ? 4 : 3; 
             const word = num === 4 ? "four" : "three";
 
             for (let i = 0; i < num; i += 1) {
