@@ -36,6 +36,9 @@ class Index extends React.Component {
 
           <div>
             <p>
+              <b>09/27/18</b> -- My replacement for <a href="http://nodocchi.moe">nodocchi.moe</a> is done! (<a href="https://tenhou.danylik.com/index.php?user=0ddba11">tenhou.danylik.com</a>)  Well, not quite done -- but far enough along to bring Tenhou functionality back online for <Link to="/mahjong/"> our house mahjong graphs!</Link>  Stay tuned for complete API docs / standalone site soon!
+            </p>
+            <p>
               <b>09/16/18</b> -- It turns out{" "}
               <a href="http://nodocchi.moe">nodocchi.moe</a> isn{"'"}t
               actually down; in fact, it looks like they just banned us in
