@@ -88,7 +88,7 @@
     "lint:md": "remark content/",
     "write-good": "write-good $(glob 'content/posts/**/*.md')",
     "format:js": "prettier '**/{src,test}/**/*.{js,jsx}' --write",
-    "test": "jest",
+    "test": "jest --forceExit",
     "coverage": "jest --coverage --coverageReporters=text-lcov"
   },
   "remarkConfig": {
