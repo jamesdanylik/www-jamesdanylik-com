@@ -29,7 +29,7 @@
     "gatsby-source-anilist": "^0.1.0",
     "gatsby-source-filesystem": "next",
     "gatsby-source-git-commit": "^0.0.4",
-    "gatsby-source-lastfm": "^0.1.1",
+    "gatsby-source-lastfm": "^0.1.2",
     "gatsby-source-npms": "^0.0.1",
     "gatsby-source-steam": "^0.1.0",
     "gatsby-transformer-remark": "next",
