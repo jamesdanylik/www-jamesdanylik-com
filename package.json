@@ -28,7 +28,7 @@
     "gatsby-remark-responsive-iframe": "next",
     "gatsby-source-anilist": "^0.1.0",
     "gatsby-source-filesystem": "next",
-    "gatsby-source-git-commit": "^0.0.4",
+    "gatsby-source-git-commit": "^0.0.5",
     "gatsby-source-lastfm": "^0.1.2",
     "gatsby-source-npms": "^0.0.1",
     "gatsby-source-steam": "^0.1.0",

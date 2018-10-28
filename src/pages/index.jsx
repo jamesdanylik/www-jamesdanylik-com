@@ -25,6 +25,8 @@ class Index extends React.Component {
     const reviewEdges = this.props.data.allGoodreadsShelf.edges;
     const lastEdges = this.props.data.allLastfmTrack.edges;
     const buildTime = new Date(Date.parse(this.props.data.site.buildTime));
+    const commitTime = new Date(this.props.data.allGitCommit.edges[0].node.commitDate * 1000);
+    const commitSubject = this.props.data.allGitCommit.edges[0].node.commitSubject;
 
     return (
       <Layout location={this.props.location}>
@@ -32,15 +34,15 @@ class Index extends React.Component {
           <Helmet title={config.siteTitle} />
           <SEO />
           <h1>Warning!</h1>
-          <h2>Under HEAVY Construction</h2>
+          <h2>Under <em>HEAVY</em> Construction: Open in Development!</h2>
 
           <div>
             <p>
               <b>10/26/18</b> -- Wow, I've been busy lately!  Still working on getting an automated process set up for the Tenhou service; got some more advice on how I can improve its schema and reporting capabilities, so it's probably worth the wait.  Also, 2 bugs have come to my attention: first, gatsby-source-steam fails if you've played no games recently. It adds no nodes to the schema and queries dependent on them fail, which isn't great obviously, but perhaps worse, gatsby-source-lastfm is getting less tracks then requested <i>sometimes</i> and failing unit tests.  
-</p>
-                <p>In the first case, I'm still deciding what to do, since the plugin itself doesn't really seem to fail -- only the queries that expect it to have added nodes to the schema -- so perhaps the smartest thing to do is fix that at the application level?</p>
+            </p>
+            <p>In the first case, I'm still deciding what to do, since the plugin itself doesn't really seem to fail -- only the queries that expect it to have added nodes to the schema -- so perhaps the smartest thing to do is fix that at the application level?</p>
 
-                <p>
+            <p>
                 In the second... well, I'm not too sure where those lost tracks are going yet, or what triggers the behavior.  Next steps seem to be dump out what tracks were present when the process fails, and try to identify which ones are missing from GraphQL.  Additionally, all these little hard-coded asides on the homepage, while my article systems sits completely full of test data is getting a little ridiculous.  I'll Try My Best&trade; to get it worked out as soon as possible. 
             </p>
 
@@ -106,18 +108,18 @@ class Index extends React.Component {
             <ProjectTracker npmsEdges={npmsEdges} />
           </div>
           <div>
-            Now viewing commit{" "}
-            <a
-              href={`https://github.com/jamesdanylik/www-jamesdanylik-com/commit/${buildCommit}`}
-            >
-              {buildCommit.slice(0, 7)}
-            </a>, from{" "}
+            Now viewing build{" "}
             <a
               href={`https://travis-ci.org/jamesdanylik/www-jamesdanylik-com/builds/${travisId}`}
             >
               #{travisNum}
-            </a>{" "}
-            {buildTime.toLocaleString()}.
+            </a> made{" "}
+            {buildTime.toLocaleString()} of{" "}
+            <a
+              href={`https://github.com/jamesdanylik/www-jamesdanylik-com/commit/${buildCommit}`}
+            >
+              {buildCommit.slice(0, 7)} | "{commitSubject}"
+            </a> on {commitTime.toLocaleString()}.
           </div>
           <PostListing postEdges={postEdges} />
           <LastFM lastEdges={lastEdges} />
@@ -174,7 +176,9 @@ export const pageQuery = graphql`
     allGitCommit {
       edges {
         node {
-          commitHash
+	  commitHash
+	  commitDate
+    commitSubject
           travisId
           travisNum
         }
