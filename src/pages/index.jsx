@@ -37,6 +37,9 @@ class Index extends React.Component {
           <h2>Under <em>HEAVY</em> Construction: Open in Development!</h2>
 
           <div>
+	    <p>
+	      <b>01/26/19</b> -- So that was big gap, huh?  The downtime was primarily a result of my main workstation quite literally erupting into flames, but I can't entirely blame that -- I also got a new job and a new 3d printer!  Expect more updates soon, but I'm still in the process of getting everything sorted, so no promises... yet! 
+	    </p>
             <p>
               <b>10/26/18</b> -- Wow, I've been busy lately!  Still working on getting an automated process set up for the Tenhou service; got some more advice on how I can improve its schema and reporting capabilities, so it's probably worth the wait.  Also, 2 bugs have come to my attention: first, gatsby-source-steam fails if you've played no games recently. It adds no nodes to the schema and queries dependent on them fail, which isn't great obviously, but perhaps worse, gatsby-source-lastfm is getting less tracks then requested <i>sometimes</i> and failing unit tests.  
             </p>
