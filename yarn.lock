@@ -5571,15 +5571,17 @@ gatsby-source-filesystem@next:
     valid-url "^1.0.9"
     xstate "^3.1.0"
 
-gatsby-source-git-commit@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/gatsby-source-git-commit/-/gatsby-source-git-commit-0.0.4.tgz#de2b879733c7f02803c6e828c16b202a4311a810"
+gatsby-source-git-commit@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/gatsby-source-git-commit/-/gatsby-source-git-commit-0.0.5.tgz#c0e6de5ca2a088cdeccb192a32b79a137d646c6a"
+  integrity sha512-Tq+RFO2Br8I5xDJFnyQK68MFY0wHoHLSHNsMP8iP3bNV76YPlbUffeuNvZDkyNBphF7YqVNBYEEkJtL6KviHzw==
   dependencies:
     child_process "^1.0.2"
 
-gatsby-source-lastfm@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/gatsby-source-lastfm/-/gatsby-source-lastfm-0.1.1.tgz#64c30195a730ea7601fcac4bc3c3d92166220d31"
+gatsby-source-lastfm@^0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/gatsby-source-lastfm/-/gatsby-source-lastfm-0.1.2.tgz#ba420a904b6ec64589acb34d6e77401960ca7915"
+  integrity sha512-SDGenWxt2IfRN9UMDsdIWsCUSyfyeuhvL9mA81j7G5NFTeXN4qKT1Jc8DTL0tQD5REgik8v5L0ncSGeJsLKbCA==
   dependencies:
     node-fetch "^2.1.2"
     query-string "^6.1.0"
