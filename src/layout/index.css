@@ -4,6 +4,17 @@
 
 html {
     height: 100%;
+    background-color: #272D2D;
+    color: #A39BA8;
+}
+
+a {
+   color: #BECAD9; 
+   
+}
+
+a:visited {
+   color: #97A2B0; 	
 }
 
 body {
