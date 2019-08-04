@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { graphql } from "gatsby";
 
 export const testLastFM = graphql`
-  fragment TestLastfm on RootQueryType {
+  fragment TestLastfm on Query {
     allLastfmPlayback {
       edges {
         node {

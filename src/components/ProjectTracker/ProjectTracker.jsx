@@ -2,7 +2,7 @@ import React from "react";
 import { graphql } from "gatsby";
 
 export const testNpms = graphql`
-  fragment TestNpms on RootQueryType {
+  fragment TestNpms on Query {
     allNpmsPackage {
       edges {
         node {

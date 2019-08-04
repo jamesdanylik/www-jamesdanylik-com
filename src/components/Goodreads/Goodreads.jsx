@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { graphql } from "gatsby";
 
 export const testGoodreads = graphql`
-  fragment TestGoodreads on RootQueryType {
+  fragment TestGoodreads on Query {
     allGoodreadsShelf {
       edges {
         node {

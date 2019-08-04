@@ -18,3 +18,7 @@ It also utilize several source plugins which I've implmented myself and made ava
 
 Travis-CI makes builds daily and on-commit, before depoying the resulting site to [james.danylik.com](https://james.danylik.com).  (Or will; this is still being worked on at this phase!)
 
+Needs this kernel option set for tests to work:
+```bash
+sudo sysctl -w kernel.unprivileged_userns_clone=1
+```

@@ -13,8 +13,9 @@ import "./post.css";
 
 export default class PostTemplate extends React.Component {
   render() {
-    const { slug } = this.props.pageContext;
-    const postNode = this.props.data.markdownRemark;
+    const { data, pageContext } = this.props;
+    const { slug } = pageContext;
+    const postNode = data.markdownRemark;
     const post = postNode.frontmatter;
     if (!post.id) {
       post.id = slug;
@@ -23,7 +24,7 @@ export default class PostTemplate extends React.Component {
       post.category_id = config.postDefaultCategoryID;
     }
     return (
-      <Layout location={this.props.location}>
+      <Layout>
         <div>
           <Helmet>
             <title>{`${post.title} | ${config.siteTitle}`}</title>
@@ -60,10 +61,6 @@ export const pageQuery = graphql`
         tags
       }
       fields {
-        nextTitle
-        nextSlug
-        prevTitle
-        prevSlug
         slug
         date
       }

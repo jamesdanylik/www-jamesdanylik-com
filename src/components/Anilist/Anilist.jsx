@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { graphql } from "gatsby";
 
 export const testAnilist = graphql`
-  fragment TestAnilist on RootQueryType {
+  fragment TestAnilist on Query {
     allAnilistMedialistcollection {
       edges {
         node {

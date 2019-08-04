@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { graphql } from "gatsby";
 
 export const testSteam = graphql`
-  fragment TestSteam on RootQueryType {
+  fragment TestSteam on Query {
     allSteamGame {
       edges {
         node {

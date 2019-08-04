@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { graphql } from "gatsby";
 
 export const testGitcommit = graphql`
-  fragment TestGitcommit on RootQueryType {
+  fragment TestGitcommit on Query {
     allGitCommit {
       edges {
         node {
