@@ -6,7 +6,7 @@
   "dependencies": {
     "@jamesdanylik/gatsby-source-goodreads": "^0.1.0",
     "chart.js": "^2.7.2",
-    "csv-parse": "^2.5.0",
+    "csv-parse": "^4.4.6",
     "es6-promise": "^4.2.4",
     "gatsby": "^2.13.50",
     "gatsby-image": "^2.2.8",
