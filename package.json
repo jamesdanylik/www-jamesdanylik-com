@@ -32,7 +32,7 @@
     "gatsby-source-lastfm": "^0.1.2",
     "gatsby-source-npms": "^0.0.1",
     "gatsby-source-steam": "^0.1.0",
-    "gatsby-transformer-remark": "^2.6.10",
+    "gatsby-transformer-remark": "^5.25.1",
     "gatsby-transformer-sharp": "^2.2.5",
     "google-palette": "^1.1.0",
     "isomorphic-fetch": "^2.2.1",
